@@ -28,7 +28,7 @@ public enum Rank {
         this.secondaryValue = secondaryValue;
     }
 
-    public Integer getPrimaryValue(){
+    public Integer   getPrimaryValue(){
 
         return  this.primaryValue;
     }
