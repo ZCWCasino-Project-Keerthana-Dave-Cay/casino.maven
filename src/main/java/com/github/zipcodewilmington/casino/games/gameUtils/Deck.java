@@ -10,8 +10,6 @@ import java.util.Stack;
 
 public class Deck {
 //    List<Card> deckList = new ArrayList<>();
-
-
     //reset deck
 
     //shuffle cards
@@ -54,6 +52,7 @@ public class Deck {
 
     }
 
+
     public void setDeck(Stack<Cards> cardDeck) {
         this.cardDeck = cardDeck;
     }
@@ -82,6 +81,7 @@ public class Deck {
     /*
     draws multiple cards from the deck
      */
+
      public List<Cards> drawMultipleCards(int numberOfCards) {
          List<Cards> newCards = new ArrayList<Cards>();
          for (int i = 0; i < numberOfCards; i++) {
