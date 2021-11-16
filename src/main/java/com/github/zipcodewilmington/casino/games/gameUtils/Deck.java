@@ -10,8 +10,6 @@ import java.util.Stack;
 
 public class Deck {
 //    List<Card> deckList = new ArrayList<>();
-
-
     //reset deck
 
     //shuffle cards
