@@ -1,5 +1,7 @@
 package com.github.zipcodewilmington.casino.games.gameUtils;
 
+import com.sun.xml.internal.bind.v2.TODO;
+
 import javax.smartcardio.Card;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +10,7 @@ import java.util.Stack;
 
 public class Deck {
 //    List<Card> deckList = new ArrayList<>();
+
 
     //reset deck
 
@@ -53,9 +56,17 @@ public class Deck {
     /*
     draws multiple cards from the deck
      */
-    public void drawMultipleCards(Cards[] cards) {
-        for(Cards card : cards)
-            cardDeck.pop();
+//    public void drawMultipleCards(Cards[] cards) {
+//        for(Cards card : cards)
+//            cardDeck.pop();
+//
+//    }
+    public List<Cards> drawMultipleCards(int numberOfCards) {
+        List<Cards> newCards = new ArrayList<>();
+        for (int i = 0; i < numberOfCards; i++) {
+            newCards.add(cardDeck.pop());
+        }
+        return newCards;
     }
 
 

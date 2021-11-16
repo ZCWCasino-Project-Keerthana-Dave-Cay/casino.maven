@@ -4,8 +4,8 @@ import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.CasinoAccountManager;
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.PlayerInterface;
-import com.github.zipcodewilmington.casino.games.numberguess.HighLow;
-import com.github.zipcodewilmington.casino.games.numberguess.HighLowPlayer;
+import com.github.zipcodewilmington.casino.games.numberguess.War;
+import com.github.zipcodewilmington.casino.games.numberguess.WarPlayer;
 import com.github.zipcodewilmington.casino.games.slots.BigSixWheel;
 import com.github.zipcodewilmington.casino.games.slots.BigSixWheelPlayer;
 import com.github.zipcodewilmington.utils.AnsiColor;
@@ -32,8 +32,8 @@ public class Casino implements Runnable {
                     String gameSelectionInput = getGameSelectionInput().toUpperCase();
                     if (gameSelectionInput.equals("BigSixWheel")) {
                         play(new BigSixWheel(), new BigSixWheelPlayer());
-                    } else if (gameSelectionInput.equals("HighLow")) {
-                        play(new HighLow(), new HighLowPlayer());
+                    } else if (gameSelectionInput.equals("War")) {
+                        play(new War(), new WarPlayer());
                     } else {
                         // TODO - implement better exception handling
                         String errorMessage = "[ %s ] is an invalid game selection";
@@ -66,7 +66,7 @@ public class Casino implements Runnable {
         return console.getStringInput(new StringBuilder()
                 .append("Welcome to the Game Selection Dashboard!")
                 .append("\nFrom here, you can select any of the following options:")
-                .append("\n\t[ BigSixWheel ], [ HighLow ]")
+                .append("\n\t[ BigSixWheel ], [ War ]")
                 .toString());
     }
 
