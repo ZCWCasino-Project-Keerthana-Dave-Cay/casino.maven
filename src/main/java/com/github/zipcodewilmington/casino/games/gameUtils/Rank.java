@@ -29,11 +29,12 @@ public enum Rank {
     }
 
     public Integer getPrimaryValue(){
-        return  primaryValue;
+
+        return  this.primaryValue;
     }
 
     public Integer getSecondaryValue(){
-        return secondaryValue;
+        return this.secondaryValue;
     }
 }
 //each item is public static final
