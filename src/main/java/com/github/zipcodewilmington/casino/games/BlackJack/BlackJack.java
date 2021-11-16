@@ -8,7 +8,7 @@ public class BlackJack implements GameInterface {
 
     @Override
     public void add(PlayerInterface player) {
-    
+
     }
 
     @Override
