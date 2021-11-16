@@ -14,7 +14,6 @@ public class Cards {
     }
 
 
-
     public Suit getSuit(){
         return suit;
     }
@@ -22,7 +21,6 @@ public class Cards {
     public Rank getRank(){
         return rank;
     }
-
 
 
 }
