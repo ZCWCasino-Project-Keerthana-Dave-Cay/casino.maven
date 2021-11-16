@@ -53,10 +53,13 @@ public class Deck {
     /*
     draws multiple cards from the deck
      */
-    public void drawMultipleCards(Cards[] cards) {
-        for(Cards card : cards)
-            cardDeck.pop();
-    }
+     public List<Cards> drawMultipleCards(int numberOfCards) {
+         List<Cards> newCards = new ArrayList<Cards>();
+         for (int i = 0; i < numberOfCards; i++) {
+             newCards.add(cardDeck.pop());
+         }
+         return newCards;
+     }
 
 
     public void shuffleDeck(){
