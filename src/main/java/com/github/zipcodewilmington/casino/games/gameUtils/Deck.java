@@ -10,8 +10,6 @@ import java.util.Stack;
 
 public class Deck {
 //    List<Card> deckList = new ArrayList<>();
-
-
     //reset deck
 
     //shuffle cards
@@ -33,6 +31,7 @@ public class Deck {
      */
 
     public Cards draw(){
+
         return cardDeck.pop();
 
     }

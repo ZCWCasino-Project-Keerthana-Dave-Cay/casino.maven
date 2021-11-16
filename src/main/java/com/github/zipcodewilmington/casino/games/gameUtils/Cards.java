@@ -13,6 +13,13 @@ public class Cards {
         this.rank = rank;
     }
 
+    public void setSuit(Suit suit) {
+        this.suit = suit;
+    }
+
+    public void setRank(Rank rank) {
+        this.rank = rank;
+    }
 
     public Suit getSuit(){
         return suit;
