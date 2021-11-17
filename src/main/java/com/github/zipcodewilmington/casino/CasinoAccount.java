@@ -36,4 +36,8 @@ public class CasinoAccount {
        return accountBalance;
     }
 
+    public Integer checkBalance(Integer balance){
+        return accountBalance;
+    }
+
 }
