@@ -17,6 +17,10 @@ public class Deck {
     //draw a card - must be stack method
     Stack<Cards> cardDeck = new Stack<>();
 
+    public Stack<Cards> getCardDeck() {
+        return cardDeck;
+    }
+
     public Deck() {
 
     }
@@ -29,7 +33,7 @@ public class Deck {
         for (int i = 0; i < noOfDecks; i++) {
             for(Suit suit : Suit.values()) {
                 for (Rank rank : Rank.values()) {
-                    cardDeck.push(new Cards(suit,rank));
+                    cardDeck.push(new Cards(rank,suit));
                 }
             }
         }
@@ -95,7 +99,6 @@ public class Deck {
     }
 
 
-
     public void shuffleDeck(){
         Collections.shuffle(cardDeck);
     }
@@ -105,5 +108,6 @@ public class Deck {
     public void clear() {
         cardDeck.clear();
     }
+
 
 }
