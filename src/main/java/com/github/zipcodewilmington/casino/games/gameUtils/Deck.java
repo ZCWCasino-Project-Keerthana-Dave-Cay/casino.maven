@@ -7,8 +7,6 @@ import java.util.Stack;
 
 public class Deck {
 //    List<Card> deckList = new ArrayList<>();
-
-
     //reset deck
 
     //shuffle cards
@@ -16,22 +14,52 @@ public class Deck {
     //draw a card - must be stack method
     Stack<Cards> cardDeck = new Stack<>();
 
+    public Stack<Cards> getCardDeck() {
+        return cardDeck;
+    }
 
     public Deck() {
-        for(Suit suit : Suit.values()) {
-            for (Rank rank : Rank.values()) {
-                cardDeck.push(new Cards(suit,rank));
+        collectCard(1);
+    }
+
+    public Deck(int numberOdDecks) {
+        collectCard(numberOdDecks);
+    }
+
+    public void collectCard(int noOfDecks) {
+        for (int i = 0; i < noOfDecks; i++) {
+            for(Suit suit : Suit.values()) {
+                for (Rank rank : Rank.values()) {
+                    cardDeck.push(new Cards(rank,suit));
+                }
             }
         }
+        Collections.shuffle(cardDeck);
     }
 
     /*
     Gets the top card of the deck and removes it from the deck
      */
 
-    public Cards draw(){
-        return cardDeck.pop();
+    public Cards drawCard(){
 
+        if(!cardDeck.isEmpty()){
+            Cards drawnCard = cardDeck.pop();
+            return drawnCard;
+        }
+        else
+            System.out.println("Deck is empty");
+        return null;
+
+    }
+
+
+    public void setDeck(Stack<Cards> cardDeck) {
+        this.cardDeck = cardDeck;
+    }
+
+    public Stack<Cards> getDeck() {
+        return cardDeck;
     }
 
    /*Adds a card to the top of the Deck
@@ -50,22 +78,23 @@ public class Deck {
         for(Cards card : cards)
             cardDeck.push(card);
     }
+
     /*
     draws multiple cards from the deck
      */
 
-//    public void drawMultipleCards(Cards[] cards) {
-//        for(Cards card : cards)
-//            cardDeck.pop();
-//
-//    }
-    public List<Cards> drawMultipleCards(int numberOfCards) {
-        List<Cards> newCards = new ArrayList<>();
-        for (int i = 0; i < numberOfCards; i++) {
-            newCards.add(cardDeck.pop());
-        }
-        return newCards;
+     public List<Cards> drawMultipleCards(int numberOfCards) {
+         List<Cards> newCards = new ArrayList<Cards>();
+         for (int i = 0; i < numberOfCards; i++) {
+             newCards.add(cardDeck.pop());
+         }
+         return newCards;
+     }
+
+        public Integer getSize() {
+            return cardDeck.size();
     }
+
 
     public void shuffleDeck(){
         Collections.shuffle(cardDeck);
@@ -77,11 +106,5 @@ public class Deck {
         cardDeck.clear();
     }
 
-   /*
-   check to see if there are any cards in the deck
-    */
-    public Boolean isEmpty(){
-        return cardDeck.isEmpty();
-    }
 
 }
