@@ -1,8 +1,16 @@
 package com.github.zipcodewilmington.casino.games.gameUtils;
 
-import java.util.*;
 
-public class Hand {
+
+public class Hand extends Deck {
+
+
+    public Deck dealerBlackJackHand() {
+        Deck dealersHandBJ = new Deck();
+        dealersHandBJ.drawMultipleCards(2);
+        return dealersHandBJ;
+    }
+
 
 
 

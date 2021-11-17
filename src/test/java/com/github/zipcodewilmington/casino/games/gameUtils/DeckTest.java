@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class DeckTest {
 
+
     @Test
     public void test_draw_empty_deck_expect_null(){
         //given
@@ -36,9 +37,20 @@ public class DeckTest {
         System.out.println(testDeck);
     }
 
-    @Test
-    public void test_two_consecutive_draw_with_one_card_deck_expect_null_for_second_draw(){
 
+    @Test
+    public void testDeckDraw(){
+        //given
+        Deck testDeck = new Deck();
+        Cards expected = new Cards(Rank.Ace, Suit.DIAMONDS);
+        //when
+        testDeck.drawCard();
+
+        Cards actual = testDeck.drawCard();
+        //then
+        System.out.println(testDeck.getDeck().toString());
+        assertEquals(expected, actual);
+        //this test will fail because card drawing is random
 
     }
 
