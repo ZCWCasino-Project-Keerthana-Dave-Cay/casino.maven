@@ -24,7 +24,6 @@ public class CasinoAccount {
     }
 
 
-
     public Integer addWinningsToBalance(Integer winnings){
         accountBalance+= winnings; //accountBalance = accountBalance + winnings
         return accountBalance;
