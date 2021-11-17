@@ -16,17 +16,7 @@ public class Cards {
         this.rank = rank;
     }
 
-<<<<<<< HEAD
-=======
-    public void setSuit(Suit suit) {
-        this.suit = suit;
-    }
 
-    public void setRank(Rank rank) {
-        this.rank = rank;
-    }
-
->>>>>>> 8f159e1f093d57019f563ecefde343f6e5cca8f9
     public Suit getSuit(){
         return suit;
     }

@@ -18,7 +18,7 @@ public class Deck {
     Stack<Cards> cardDeck = new Stack<>();
 
     public Deck() {
-        collectCard(1);
+
     }
 
     public Deck(int numberOdDecks) {
