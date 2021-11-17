@@ -1,6 +1,8 @@
 package com.github.zipcodewilmington.casino.games.gameUtils;
 
+
 public class Hand extends Deck {
+
 
     public Deck dealerBlackJackHand() {
         Deck dealersHandBJ = new Deck();

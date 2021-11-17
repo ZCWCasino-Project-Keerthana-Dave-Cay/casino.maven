@@ -1,8 +1,5 @@
 package com.github.zipcodewilmington.casino.games.gameUtils;
 
-import com.sun.xml.internal.bind.v2.TODO;
-
-import javax.smartcardio.Card;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

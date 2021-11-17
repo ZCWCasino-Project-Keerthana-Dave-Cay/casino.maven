@@ -1,9 +1,5 @@
 package com.github.zipcodewilmington.casino.games.gameUtils;
 
-import javax.smartcardio.Card;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Cards {
 
     private Suit suit;
