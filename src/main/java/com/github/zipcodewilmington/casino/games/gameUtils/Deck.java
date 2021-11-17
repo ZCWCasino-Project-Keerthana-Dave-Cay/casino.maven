@@ -19,7 +19,7 @@ public class Deck {
     }
 
     public Deck() {
-        collectCard(1);
+
     }
 
     public Deck(int numberOdDecks) {

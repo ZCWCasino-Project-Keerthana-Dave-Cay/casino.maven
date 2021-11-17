@@ -11,6 +11,7 @@ public class WarPlayer {
     //set bet amount
     //set bet multiplier
     //collect winnings
+
 //    private String name;
 //    private Hand hand;
 //
