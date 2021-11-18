@@ -4,6 +4,8 @@ import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.CasinoAccountManager;
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.PlayerInterface;
+import com.github.zipcodewilmington.casino.games.BlackJack.BlackJack;
+import com.github.zipcodewilmington.casino.games.BlackJack.BlackJackPlayer;
 import com.github.zipcodewilmington.casino.games.numberguess.War;
 import com.github.zipcodewilmington.casino.games.numberguess.WarPlayer;
 import com.github.zipcodewilmington.casino.games.slots.BigSixWheel;
@@ -30,11 +32,14 @@ public class Casino implements Runnable {
                 boolean isValidLogin = casinoAccount != null;
                 if (isValidLogin) {
                     String gameSelectionInput = getGameSelectionInput().toUpperCase();
-                    if (gameSelectionInput.equals("BigSixWheel")) {
+                    if (gameSelectionInput.equals("BIGSIXWHEEL")) {
                         play(new BigSixWheel(), new BigSixWheelPlayer());
-                    } else if (gameSelectionInput.equals("War")) {
+                    } else if (gameSelectionInput.equals("WAR")) {
                         play(new War(), new WarPlayer());
-                    } else {
+                    } else if (gameSelectionInput.equals("BLACKJACK")){
+                        play(new BlackJack(casinoAccount), new BlackJackPlayer());
+                    }
+                    else {
                         // TODO - implement better exception handling
                         String errorMessage = "[ %s ] is an invalid game selection";
                         throw new RuntimeException(String.format(errorMessage, gameSelectionInput));
@@ -66,7 +71,7 @@ public class Casino implements Runnable {
         return console.getStringInput(new StringBuilder()
                 .append("Welcome to the Game Selection Dashboard!")
                 .append("\nFrom here, you can select any of the following options:")
-                .append("\n\t[ BigSixWheel ], [ War ]")
+                .append("\n\t[ BIGSIXWHEEL ], [ WAR ], [ BLACKJACK ]")
                 .toString());
     }
 
