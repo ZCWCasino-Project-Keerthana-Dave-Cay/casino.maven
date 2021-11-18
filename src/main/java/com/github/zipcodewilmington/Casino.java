@@ -30,9 +30,9 @@ public class Casino implements Runnable {
                 boolean isValidLogin = casinoAccount != null;
                 if (isValidLogin) {
                     String gameSelectionInput = getGameSelectionInput().toUpperCase();
-                    if (gameSelectionInput.equals("BigSixWheel")) {
-                        play(new BigSixWheel(casinoAccount), new BigSixWheelPlayer());
-                    } else if (gameSelectionInput.equals("War")) {
+                    if (gameSelectionInput.equals("BIGSIXWHEEL")) {
+                        play(new BigSixWheel(casinoAccount), new BigSixWheelPlayer(casinoAccount));
+                    } else if (gameSelectionInput.equals("WAR")) { //make sure we uppercase the games
                         play(new War(), new WarPlayer());
                     } else {
                         // TODO - implement better exception handling

@@ -3,7 +3,7 @@ package com.github.zipcodewilmington.casino.games.slots;
 import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.PlayerInterface;
-import jdk.internal.access.JavaSecurityAccess;
+
 
 import java.util.*;
 
@@ -19,7 +19,7 @@ public class BigSixWheel implements GameInterface {
 
 
 
-    private HashMap<Integer,Integer> payOuts;
+    private Map<Integer,Integer> payOuts;
     private List<Integer> possibleWheelHits;
     private BigSixWheelEngine bigSixWheelEngine;
     private CasinoAccount casinoAccount;
@@ -30,6 +30,7 @@ public class BigSixWheel implements GameInterface {
 
         this.casinoAccount = casinoAccount;
         this.bigSixWheelEngine = new BigSixWheelEngine(this);
+        add(new BigSixWheelPlayer(casinoAccount));
 
         setUpGame();
 
@@ -46,7 +47,7 @@ public class BigSixWheel implements GameInterface {
     private void setWheelHits() {
 
         possibleWheelHits = Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                2, 2, 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 20, 20, 0, 0);
+                2, 2, 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 20, 20, 40, 40);
 
     }
 
@@ -58,13 +59,18 @@ public class BigSixWheel implements GameInterface {
         payOuts.put(5,5);
         payOuts.put(10,10);
         payOuts.put(20,20);
-        payOuts.put(0,40); //this is the bonus tile
+        payOuts.put(40,40); //this is the bonus tile
     }
 
 
     public List<Integer> getPossibleWheelHits(){
 
         return possibleWheelHits;
+    }
+
+    public BigSixWheelPlayer getPlayer(){
+
+        return player;
     }
 
 
