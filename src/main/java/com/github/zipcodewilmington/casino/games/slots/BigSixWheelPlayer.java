@@ -5,10 +5,8 @@ package com.github.zipcodewilmington.casino.games.slots;
  */
 
 public class BigSixWheelPlayer {
-    //setting balance
     //get balance
     //set bet amount
-    //set bet multiplier
     //collect winnings
 
     private String playerName;

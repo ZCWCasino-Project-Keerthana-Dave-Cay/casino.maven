@@ -17,9 +17,8 @@ public class BigSixWheel implements GameInterface {
     //Array<> of 54 tile
     //Tiles for players to choose from
 
-    private Random tileRandomizer;
-    private Integer bettingTiles;
-    private Integer tilesNumber;
+
+
     private HashMap<Integer,Integer> payOuts;
     private List<Integer> possibleWheelHits;
     private BigSixWheelEngine bigSixWheelEngine;
@@ -30,8 +29,7 @@ public class BigSixWheel implements GameInterface {
     public BigSixWheel(CasinoAccount casinoAccount){
 
         this.casinoAccount = casinoAccount;
-        this.tileRandomizer = new Random();
-        this.bigSixWheelEngine = new BigSixWheelEngine();
+        this.bigSixWheelEngine = new BigSixWheelEngine(this);
 
         setUpGame();
 
@@ -49,6 +47,7 @@ public class BigSixWheel implements GameInterface {
 
         possibleWheelHits = Arrays.asList(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                 2, 2, 5, 5, 5, 5, 5, 5, 5, 10, 10, 10, 10, 20, 20, 0, 0);
+
     }
 
 
@@ -63,13 +62,10 @@ public class BigSixWheel implements GameInterface {
     }
 
 
-    public Integer spinWheel () {
+    public List<Integer> getPossibleWheelHits(){
 
-            int randomElement = possibleWheelHits.get(tileRandomizer.nextInt(possibleWheelHits.size()));
-
-            return randomElement;
-        }
-
+        return possibleWheelHits;
+    }
 
 
 
