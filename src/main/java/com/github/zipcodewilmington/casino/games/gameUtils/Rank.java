@@ -28,13 +28,29 @@ public enum Rank {
         this.secondaryValue = secondaryValue;
     }
 
-    public Integer   getPrimaryValue(){
+    public Integer getPrimaryValue(){
 
-        return  this.primaryValue;
+        return this.primaryValue;
     }
 
     public Integer getSecondaryValue(){
         return this.secondaryValue;
+    }
+
+    public String getDisplayValue() {
+        String rankDisplay = "";
+        switch (primaryValue) {
+            case 1: rankDisplay = "A";
+                    break;
+            case 11: rankDisplay = "J";
+                    break;
+            case 12: rankDisplay = "Q";
+                    break;
+            case 13: rankDisplay = "K";
+                    break;
+            default: rankDisplay = Integer.toString(primaryValue);
+        }
+        return rankDisplay;
     }
 }
 //each item is public static final

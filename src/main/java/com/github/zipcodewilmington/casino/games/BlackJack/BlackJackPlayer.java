@@ -4,10 +4,19 @@ import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.PlayerInterface;
 
 public class BlackJackPlayer implements PlayerInterface {
+    CasinoAccount casinoAccount;
+
+    public BlackJackPlayer() {
+    }
+
+    public void setCasinoAccount(CasinoAccount casinoAccount) {
+        this.casinoAccount = casinoAccount;
+    }
+
     @Override
     public CasinoAccount getArcadeAccount() {
 
-        return null;
+        return casinoAccount;
     }
 
     @Override

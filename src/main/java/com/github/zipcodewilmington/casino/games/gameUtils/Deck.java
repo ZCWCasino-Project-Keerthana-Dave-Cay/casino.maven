@@ -6,21 +6,26 @@ import java.util.List;
 import java.util.Stack;
 
 public class Deck {
-//    List<Card> deckList = new ArrayList<>();
+
+    Deck newDeckOfCards;
+
+    public Deck() {
+
+    }
+
+    //    List<Card> deckList = new ArrayList<>();
     //reset deck
 
     //shuffle cards
 
     //draw a card - must be stack method
-    Stack<Cards> cardDeck = new Stack<>();
+    Stack<Card> cardDeck = new Stack<>();
 
-    public Stack<Cards> getCardDeck() {
+    public Stack<Card> getCardDeck() {
         return cardDeck;
     }
 
-    public Deck() {
 
-    }
 
     public Deck(int numberOdDecks) {
         collectCard(numberOdDecks);
@@ -30,7 +35,7 @@ public class Deck {
         for (int i = 0; i < noOfDecks; i++) {
             for(Suit suit : Suit.values()) {
                 for (Rank rank : Rank.values()) {
-                    cardDeck.push(new Cards(rank,suit));
+                    cardDeck.push(new Card(rank,suit));
                 }
             }
         }
@@ -41,24 +46,22 @@ public class Deck {
     Gets the top card of the deck and removes it from the deck
      */
 
-    public Cards drawCard(){
-
+    public Card drawCard(){
         if(!cardDeck.isEmpty()){
-            Cards drawnCard = cardDeck.pop();
+            Card drawnCard = cardDeck.pop();
             return drawnCard;
-        }
-        else
+        } else {
             System.out.println("Deck is empty");
+        }
         return null;
 
     }
 
-
-    public void setDeck(Stack<Cards> cardDeck) {
+    public void setDeck(Stack<Card> cardDeck) {
         this.cardDeck = cardDeck;
     }
 
-    public Stack<Cards> getDeck() {
+    public Stack<Card> getDeck() {
         return cardDeck;
     }
 
@@ -66,7 +69,7 @@ public class Deck {
      * @param card the Card to put on top of the deck
 
     */
-    public void add(Cards card){
+    public void add(Card card){
          cardDeck.push(card);
     }
 
@@ -74,8 +77,13 @@ public class Deck {
      * @param cards an array of Cards
 
      */
-    public void add(Cards[] cards) {
-        for(Cards card : cards)
+    public void add(Card[] cards) {
+        for(Card card : cards)
+            cardDeck.push(card);
+    }
+
+    public void add(List<Card> cards){
+        for(Card card : cards)
             cardDeck.push(card);
     }
 
@@ -83,8 +91,8 @@ public class Deck {
     draws multiple cards from the deck
      */
 
-     public List<Cards> drawMultipleCards(int numberOfCards) {
-         List<Cards> newCards = new ArrayList<Cards>();
+     public List<Card> drawMultipleCards(int numberOfCards) {
+         List<Card> newCards = new ArrayList<Card>();
          for (int i = 0; i < numberOfCards; i++) {
              newCards.add(cardDeck.pop());
          }
@@ -105,6 +113,5 @@ public class Deck {
     public void clear() {
         cardDeck.clear();
     }
-
 
 }

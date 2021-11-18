@@ -1,5 +1,5 @@
 package com.github.zipcodewilmington.casino.games.BlackJack;
-import com.github.zipcodewilmington.casino.games.gameUtils.Deck;
+import com.github.zipcodewilmington.casino.games.gameUtils.*;
 import com.github.zipcodewilmington.utils.IOConsole;
 
 import java.util.ArrayList;
@@ -11,27 +11,35 @@ public class BlackJackEngine {
     BlackJackPlayer player;
     Deck gameDeck;
     List<BlackJackPlayer> players;
-
+    Hand dealerBJHand;
+    Hand playerBJHand;
 
     public BlackJackEngine(BlackJackPlayer dealer, BlackJackPlayer player) {
         this.dealer = dealer;
         this.player = player;
         this.console = new IOConsole();
-        this.gameDeck = new Deck(1);
+        this.gameDeck = new Deck(8);
         this.players = new ArrayList<>();
-
+        this.dealerBJHand = new Hand();
+        this.playerBJHand = new Hand();
     }
-
     //when they first start game, sout what the rules/actions
     //working on methods so far
-
     public void startBJGame(){
         //to start: players, deck,
         System.out.println("Welcome to BlackJack!");
         displayRules();
-        listingPlayers();
-    }
+        welcomePlayer();
+        betCycle();
+        // initial deal for both player and dealer
+        initialPlayersHand();
+        initialDealersHand();
+        // player turn
+        // dealer turn
+        // declare winner
 
+        // restart game? y/n
+    }
     //create a new method that says display rules
     public void displayRules(){
         String userInput =
@@ -51,10 +59,65 @@ public class BlackJackEngine {
     }
 
     //list players in game
-    public void listingPlayers() {
-        players.add(dealer);
-        players.add(player);
-        System.out.println(players.toString());
+    private void welcomePlayer() {
+        System.out.printf("Welcome to the table, %s%n", player.getArcadeAccount().getAccountName());
     }
 
+    // bet cycle to validate bet amount before game
+    private void betCycle() {
+        boolean isValidBet = false;
+        do {
+            Integer bet = getUserBetAmount();
+            if (checkBet(bet)) {
+                isValidBet = true;
+            }
+        } while (!isValidBet);
+    }
+
+    //promt how much they want ot bet??
+    private Integer getUserBetAmount() {
+        return console.getIntegerInput("How much would you like to bet? \n", "");
+    }
+
+    //check balance to see if player had enough
+    private boolean checkBet(Integer bet){
+        if (bet <= player.casinoAccount.getPlayerBalance()){
+            System.out.println("Bet accepted!");
+            return true;
+        }
+        System.out.println("Insufficient funds, try again!");
+        return false;
+    }
+
+    //deal initial hands for player/dealer
+    private void initialPlayersHand(){
+        //i need 2 cards from gameDeck, so grab 2 cards
+         List<Card> initialTwoCardHand = gameDeck.drawMultipleCards(2);
+        playerBJHand.add(initialTwoCardHand);
+        System.out.println("Your hand is " + playerBJHand.toString());
+    }
+
+    //dealers hand but second is hidden
+    private void initialDealersHand(){
+        //i need 2 cards from gameDeck, so grab 2 cards
+        List<Card> initialTwoCardHand = gameDeck.drawMultipleCards(2);
+        dealerBJHand.add(initialTwoCardHand);
+        System.out.println("Dealer's hand is " + dealerBJHand.displayAllButFirst() + ", [???]");
+    }
+
+    //method hit if no hit stand
+    private void hitOrStand() {
+        String userInput = console.getStringInput("Would you like to HIT or STAND?", "HIT", "STAND");
+        //they need to be able ot repeat it multiple times
+        if (userInput.equals("HIT")) {
+                playerBJHand.add(gameDeck.drawCard());
+            } else if (userInput.equals("STAND")) {
+
+            }
+        }
+
+    //build players/dealers turn
+
+    //get winner take total of each hand and compare
 }
+

@@ -1,8 +1,7 @@
 package com.github.zipcodewilmington.casino.games.gameUtils;
 
-
-
 public class Hand extends Deck {
+
 
     public Deck dealerBlackJackHand() {
         Deck dealersHandBJ = new Deck();
@@ -26,7 +25,29 @@ public class Hand extends Deck {
         Deck playersHandWar = new Deck();
         playersHandWar.drawMultipleCards(1);
         return playersHandWar;
-
-
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringHand = new StringBuilder();
+        for (int i = 0; i < cardDeck.size(); i++) {
+            stringHand.append(cardDeck.elementAt(i).toString());
+            if (i != cardDeck.size() -1) {
+                stringHand.append(", ");
+            }
+        }
+        return stringHand.toString();
+    }
+
+    public String displayAllButFirst() {
+        StringBuilder stringHand = new StringBuilder();
+        for (int i = 1; i < cardDeck.size(); i++) {
+            stringHand.append(cardDeck.elementAt(i).toString());
+            if (i != cardDeck.size() -1) {
+                stringHand.append(", ");
+            }
+        }
+        return stringHand.toString();
+    }
+
 }

@@ -1,12 +1,12 @@
 package com.github.zipcodewilmington.casino.games.gameUtils;
 
 
-public class Cards {
+public class Card {
 
     private Suit suit;
     private Rank rank;
 
-    public Cards(Rank rank, Suit suit) {
+    public Card(Rank rank, Suit suit) {
         this.suit = suit;
         this.rank = rank;
     }
@@ -22,6 +22,6 @@ public class Cards {
 
     @Override
     public String toString() {
-        return this.suit.getGraphic() + this.rank.getPrimaryValue();
+        return this.rank.getDisplayValue() + this.suit.getGraphic();
     }
 }

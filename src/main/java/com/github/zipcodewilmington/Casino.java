@@ -31,6 +31,11 @@ public class Casino implements Runnable {
                 CasinoAccount casinoAccount = casinoAccountManager.getAccount(accountName, accountPassword);
                 boolean isValidLogin = casinoAccount != null;
                 if (isValidLogin) {
+                    // option to add monday?
+                    // addToBalance() How much do you want to add to your account?
+                    // Long input, save that to the current casino account's balance (casinoAccount.addWinningsTolanace(input))
+
+                    // lines 39->46 will be refactored into a new method for re-usability
                     String gameSelectionInput = getGameSelectionInput().toUpperCase();
                     if (gameSelectionInput.equals("BIGSIXWHEEL")) {
                         play(new BigSixWheel(), new BigSixWheelPlayer());
@@ -57,6 +62,17 @@ public class Casino implements Runnable {
                 casinoAccountManager.registerAccount(newAccount);
             }
         } while (!"logout".equals(arcadeDashBoardInput));
+    }
+
+    public void gameSelectorMenu(CasinoAccount casinoAccount) {
+        String gameSelectionInput = getGameSelectionInput().toUpperCase();
+        if (gameSelectionInput.equals("BIGSIXWHEEL")) {
+            play(new BigSixWheel(), new BigSixWheelPlayer());
+        } else if (gameSelectionInput.equals("WAR")) {
+            play(new War(), new WarPlayer());
+        } else if (gameSelectionInput.equals("BLACKJACK")){
+            play(new BlackJack(casinoAccount), new BlackJackPlayer());
+        }
     }
 
     private String getArcadeDashboardInput() {
