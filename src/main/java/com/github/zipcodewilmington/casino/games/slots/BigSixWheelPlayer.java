@@ -15,7 +15,9 @@ public class BigSixWheelPlayer {
     private int startingAmount;
     private int currentAmount;
 
+
     public BigSixWheelPlayer(String playerName, int startingAmount){
+
     }
 
     public BigSixWheelPlayer() {
