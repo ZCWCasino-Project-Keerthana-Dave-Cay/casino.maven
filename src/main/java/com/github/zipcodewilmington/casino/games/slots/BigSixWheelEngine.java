@@ -12,8 +12,9 @@ public class BigSixWheelEngine {
 
     private BigSixWheel bigSixWheel;
     private Random tileRandomizer;
-    private Map<Integer, Integer> playerBets;
+    private Map<Integer, Integer> playerBets, payOutMap;
     private Scanner keyboard;
+    private final int NUM_RANGES = 6;
     private AnsiColor ansiColor;
 
 
@@ -22,6 +23,8 @@ public class BigSixWheelEngine {
         this.tileRandomizer = new Random();
         this.playerBets = new HashMap<>();
         this.keyboard = new Scanner(System.in);
+        this.payOutMap = bigSixWheel.getPayOuts();
+        System.out.println("Welcome to the Big Six Wheel! \n");
     }
 
 
@@ -30,16 +33,22 @@ public class BigSixWheelEngine {
         reset();
         //get player's bets
         boolean isPlayerSettingBet = true;
-        int tileNumber;
+        int rangeNumber;
+        System.out.println("Pick from these ranges: \n  [0-23]:$1 [24-38]:$2  [39-45]:$5  [46-49]:$10  [50-51]:$20 [52-53]:Bonus");
         while (isPlayerSettingBet) {
-            System.out.println("Welcome to the Big Six Wheel! \n Pick a tile from 1-7... (-1 to finish): ");
-            tileNumber = keyboard.nextInt();
-            if (tileNumber >= bigSixWheel.getPossibleWheelHits().size() || tileNumber < -1) {
-                System.out.println("Invalid Input!");
-            } else if (tileNumber == -1) {
+            for(Map.Entry<Integer,Integer> playerRangeBet: playerBets.entrySet()){
+                System.out.println("Range " + playerRangeBet.getKey() + ": Value = $" + payOutMap.get(playerRangeBet.getKey()) + ", Current Bet = $" + playerRangeBet.getValue());
+            }
+            System.out.println("Enter Tile Number (-1 to finish): ");
+            rangeNumber = keyboard.nextInt();
+
+            if (rangeNumber == -1) {
                 System.out.println("Player's Bets Finished");
                 isPlayerSettingBet = false;
+            } else if(payOutMap.get(rangeNumber) == null) {
+                System.out.println("Invalid Input!");
             } else {
+
                 //TODO - set limits on just betting on 7 tiles
                 //TODO - check account balance against player bets
                 //TODO - enforce a min bet to the corresponding tile value
@@ -49,7 +58,7 @@ public class BigSixWheelEngine {
                 if (betAmount < 0) { //no negative bets
                     System.out.println("Invalid Input!");
                 } else {
-                    playerBets.put(tileNumber, playerBets.getOrDefault(tileNumber, 0) + betAmount);
+                    playerBets.put(rangeNumber, playerBets.getOrDefault(rangeNumber, 0) + betAmount);
                 }
             }
         }
@@ -72,7 +81,7 @@ public class BigSixWheelEngine {
     public void payPlayer(int winningTile) {
         int payOut = 0;
         if (playerBets.getOrDefault(winningTile, 0) > 0) {
-            payOut += playerBets.get(winningTile) * bigSixWheel.getPossibleWheelHits().get(winningTile);
+            payOut += playerBets.get(winningTile) * payOutMap.get(bigSixWheel.getPossibleWheelHits().get(winningTile));
             System.out.println("Paying Player $" + payOut + " in Winnings ");
         }
         else{

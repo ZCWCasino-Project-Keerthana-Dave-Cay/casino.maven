@@ -62,6 +62,11 @@ public class BigSixWheel implements GameInterface {
         payOuts.put(40,40); //this is the bonus tile
     }
 
+    public Map<Integer, Integer> getPayOuts(){
+
+        return payOuts;
+    }
+
 
     public List<Integer> getPossibleWheelHits(){
 
