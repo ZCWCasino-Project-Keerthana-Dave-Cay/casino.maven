@@ -13,9 +13,6 @@ public class BigSixWheelPlayer implements PlayerInterface {
     //set bet amount
     //collect winnings
 
-    private String playerName;
-    private int startingAmount;
-    private int currentAmount;
     private CasinoAccount casinoAccount;
 
 
