@@ -38,7 +38,7 @@ public class BigSixWheelEngine {
         //get player's bets
         boolean isPlayerSettingBet = true;
         int rangeNumber;
-        console.println("Pick from these Numbers: \n  [$1] [$2] [$5] [$10] [$20] [$40]");
+        console.println("Pick from these Numbers: \n  [1] [2] [5] [10] [20] [40]");
         while (isPlayerSettingBet) {
             for(Map.Entry<Integer,Integer> playerRangeBet: playerBets.entrySet()){
                 console.println("Your Pick " + playerRangeBet.getKey() + ": Value = $" + payOutMap.get(playerRangeBet.getKey()) + ", Current Bet = $" + playerRangeBet.getValue());

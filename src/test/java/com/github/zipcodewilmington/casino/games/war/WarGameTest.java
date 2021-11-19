@@ -7,12 +7,9 @@ import com.github.zipcodewilmington.casino.games.gameUtils.Deck;
 import com.github.zipcodewilmington.casino.games.gameUtils.Rank;
 import com.github.zipcodewilmington.casino.games.gameUtils.Suit;
 import com.github.zipcodewilmington.casino.games.numberguess.WarEngine;
-import com.github.zipcodewilmington.casino.games.numberguess.WarPlayer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import javax.smartcardio.Card;
 
 public class WarGameTest {
 

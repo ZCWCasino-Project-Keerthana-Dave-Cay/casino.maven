@@ -33,7 +33,7 @@ public class Casino implements Runnable {
                 if (isValidLogin) {
                     // option to add monday?
                     // addToBalance() How much do you want to add to your account?
-                    // Long input, save that to the current casino account's balance (casinoAccount.addWinningsTolanace(input))
+                    // Long input, save that to the current casino account's balance (casinoAccount.addWinningsTobalance(input))
 
                     // lines 39->46 will be refactored into a new method for re-usability
                     String gameSelectionInput = getGameSelectionInput().toUpperCase();

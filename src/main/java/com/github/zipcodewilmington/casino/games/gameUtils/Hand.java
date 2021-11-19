@@ -12,7 +12,7 @@ public class Hand extends Deck {
     }
 
     public Deck dealerWarHand() {
-        Deck dealerHandWar = new Deck();
+        Deck dealerHandWar = new Deck(1);
         dealerHandWar.drawMultipleCards(1);
         return dealerHandWar;
     }
