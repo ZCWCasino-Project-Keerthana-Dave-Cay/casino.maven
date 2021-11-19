@@ -17,7 +17,7 @@ public class BlackJackEngineTest {
         testHand.add(testCard);
         Integer expected = 2;
         //when
-        Integer actual = testHand.calcHandBJScore();
+        Integer actual = testHand.getBlackJackHandTotal();
         //then
         assertEquals(expected, actual);
 

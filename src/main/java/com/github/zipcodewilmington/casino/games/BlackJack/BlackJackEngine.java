@@ -34,11 +34,13 @@ public class BlackJackEngine {
         welcomePlayer();
         betCycle();
         // initial deal for both player and dealer
-        initialPlayersHand();
-        initialDealersHand();
+        initializeDealerHand();
+        boolean didPlayerBust = playersTurn();
         // player turn
+        dealersTurn();
         // dealer turn
         // declare winner
+        determineWinner(!didPlayerBust);
 
         // restart game? y/n
     }
@@ -93,54 +95,158 @@ public class BlackJackEngine {
     }
 
     //deal initial hands for player/dealer
-    private void initialPlayersHand() {
+    private void initializePlayerHand() {
         //i need 2 cards from gameDeck, so grab 2 cards
         List<Card> initialTwoCardHand = gameDeck.drawMultipleCards(2);
         playerBJHand.add(initialTwoCardHand);
         System.out.println("Your hand is " + playerBJHand.toString());
-        System.out.println("The total of your hand is " + playerBJHand.calcHandBJScore());
+        displayHandTotal(playerBJHand);
     }
 
     //dealers hand but second is hidden
-    private void initialDealersHand() {
+    private void initializeDealerHand() {
         //i need 2 cards from gameDeck, so grab 2 cards
         List<Card> initialTwoCardHand = gameDeck.drawMultipleCards(2);
         dealerBJHand.add(initialTwoCardHand);
         System.out.println("Dealer's hand is " + dealerBJHand.displayAllButFirst() + ", [???]");
     }
 
+    private void displayHandTotal(Hand hand) {
+        System.out.println("The total of your hand is " + hand.getBlackJackHandTotal());
+    }
+
+    private boolean validateTotal(Hand hand) {
+        return  (hand.getBlackJackHandTotal() <= 21);
+    }
+
+    private boolean playerHitStandCycle(Hand hand) {
+        String userDecision;
+        boolean isValidHandTotal;
+
+        do {
+            userDecision = hitOrStand();
+            isValidHandTotal = validateTotal(hand);
+
+        } while (userDecision.equals("HIT") && isValidHandTotal);
+
+        if (!isValidHandTotal) {
+            System.out.println("Oh no, you busted your hand! You lose.");
+        }
+
+        return isValidHandTotal;
+    }
+
     //method hit if no hit stand
-    private void hitOrStand() {
+    private String hitOrStand() {
         String userInput = console.getStringInput("Would you like to HIT or STAND?", "HIT", "STAND");
         //they need to be able ot repeat it multiple times
         if (userInput.equals("HIT")) {
-            playerBJHand.add(gameDeck.drawCard());
+            hitAction(playerBJHand);
         } else if (userInput.equals("STAND")) {
+            // handle stand
             //move to the dealers turn
+        } else {
+            System.out.println("Invalid action");
         }
+        return userInput;
+    }
+
+    private void hitAction(Hand hand) {
+        System.out.println("Drawing a card... \n\n");
+        Card hitDraw = gameDeck.drawCard();
+        System.out.println("New Card: " + hitDraw.toString());
+        hand.add(hitDraw);
+        displayHandTotal(hand);
     }
 
     //build players/dealers turn
-    private void playersTurn() {
-        hitOrStand();
-        //total up the players card values???
-        //players turn will hit or stand
-        //then keep prompting to hit until stand input while loop
-        while (userInput != "STAND") {
-
-        }
+    private boolean playersTurn() {
+        initializePlayerHand();
+        return playerHitStandCycle(playerBJHand);
     }
+
+    private void dealerHitOrStandCycle() {
+        // conditions - total is >= 17, or <= 21
+        // if <= 16, hit card
+        boolean action = false;
+        Integer handTotal = dealerBJHand.getBlackJackHandTotal();
+
+        do {
+            if (handTotal <= 16) {
+                // hit card
+                dealerBJHand.add(gameDeck.drawCard());
+                // check total
+                handTotal = dealerBJHand.getBlackJackHandTotal();
+                if (handTotal > 16 && handTotal <= 21) {
+                    action = false;
+                    // dealer stands loop stops action is false
+                } else if (handTotal <= 16) {
+                    action = true;
+                    // dealer hits again action is true
+                } else if (handTotal > 21) {
+                    // dealer busts action is false
+                    System.out.println("Dealer busted!!!!");
+                    action = false;
+                }
+            }
+        } while (action);
+    }
+
 
     private void dealersTurn() {
+        // check if dealer has black jack
+        isBlackJack(dealerBJHand);
+        if (isBlackJack(dealerBJHand)) {
+            System.out.println("Dealer got BlackJack!");
+            // determine winnings based on possible scenarios
+        } else {
+            dealerHitOrStandCycle();
+            // do hit or stand turns
+        }
+        // dealer starts when player is done
+        // AI will check card
+
         // if dealers hand is less than 16, dealer should automatically hit
-        if(dealerBJHand.calcHandBJScore() < 16){
-            dealerBJHand.add(gameDeck.drawCard());
-        } else if (dealerBJHand.calcHandBJScore() < playerBJHand.calcHandBJScore()){
-            dealerBJHand.add(gameDeck.drawCard());
-        } //do i need to do anything else?
     }
-    //build players/dealers turn
+
+    private boolean isBlackJack(Hand hand){
+        return (hand.getSize() == 2) && (hand.getBlackJackHandTotal() == 21);
+    }
 
     //get winner take total of each hand and compare
+    private void determineWinner(boolean playerBust){
+        System.out.println("Turns have ended! Let's determine the winner...");
+        System.out.printf("Player's hand: %s, Player's total: %d\n\n", playerBJHand.toString(), playerBJHand.getBlackJackHandTotal());
+        System.out.printf("Player's hand: %s, Player's total: %d\n\n", dealerBJHand.toString(), dealerBJHand.getBlackJackHandTotal());
+
+
+        if (playerBust) {
+            System.out.println("You bust, therefore you lose all your money!");
+        }
+
+        //        if (dealerBJHand.getBlackJackHandTotal() == playerBJHand.getBlackJackHandTotal()){
+//            //considered a push, return bet amount to player
+//        } else if (dealerBJHand.getBlackJackHandTotal() > playerBJHand.getBlackJackHandTotal()){
+//            //dealer wins and player loses their bet, so subtract bet amount??? or did we do that initially
+//        } else if (dealerBJHand.getBlackJackHandTotal() < playerBJHand.getBlackJackHandTotal()){
+//            //player wins and the winnings goes into their account balance
+//        }
+
+        //determine if its a blackjack..
+    }
+
+    //playing again?
+    private void doYouWantToPlayAgain(){
+        String userInput = console.getStringInput("Do you want to play again?", "YES", "NO");
+        if (userInput.equals("YES")){
+        } else{
+            String decisionInput = console.getStringInput("Would you like to switch games?", "YES", "NO");
+            if (decisionInput.equals("YES")){
+                //call the otehr 2 games without having to login
+            } else if (decisionInput.equals("NO")){
+                //exit the casino!
+            }
+        }
+    }
 }
 
