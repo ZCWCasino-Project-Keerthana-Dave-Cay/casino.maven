@@ -33,7 +33,7 @@ public class CasinoAccountManager {
                 }
             }
         }
-        System.out.println("This didn't work");
+        System.out.println("\n \n Create or log in to a valid account.");
         return null;
     }
 

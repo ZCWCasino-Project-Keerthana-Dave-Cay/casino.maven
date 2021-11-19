@@ -30,24 +30,27 @@ public class Casino implements Runnable {
                 String accountPassword = console.getStringInput("Enter your account password:");
                 CasinoAccount casinoAccount = casinoAccountManager.getAccount(accountName, accountPassword);
                 boolean isValidLogin = casinoAccount != null;
+                try{
                 if (isValidLogin) {
-                    // option to add monday?
-                    // addToBalance() How much do you want to add to your account?
-                    // Long input, save that to the current casino account's balance (casinoAccount.addWinningsTobalance(input))
-
+                    Integer userInputBalance = console.getIntegerInput("How would you like to deposit?", "");
+                    //add to account balance
+                    casinoAccount.addWinningsToBalance(userInputBalance);
                     // lines 39->46 will be refactored into a new method for re-usability
                     String gameSelectionInput = getGameSelectionInput().toUpperCase();
-                    if (gameSelectionInput.equals("BIGSIXWHEEL")) {
-                        play(new BigSixWheel(casinoAccount,console), new BigSixWheelPlayer(casinoAccount));
-                    } else if (gameSelectionInput.equals("WAR")) { //make sure we uppercase the games
-                        play(new War(), new WarPlayer(casinoAccount));
-                    } else {
-                        // TODO - implement better exception handling
+                    try {
+                        if (gameSelectionInput.equals("BIGSIXWHEEL")) {
+                            play(new BigSixWheel(casinoAccount, console), new BigSixWheelPlayer(casinoAccount));
+                        } else if (gameSelectionInput.equals("WAR")) { //make sure we uppercase the games
+                            play(new War(), new WarPlayer(casinoAccount));
+                        } else if ((gameSelectionInput.equals("BLACKJACK"))) {
+                            play(new BlackJack(casinoAccount), new BlackJackPlayer());
+                        }
+                    } catch (Exception e) {
                         String errorMessage = "[ %s ] is an invalid game selection";
                         throw new RuntimeException(String.format(errorMessage, gameSelectionInput));
                     }
-                } else {
-                    // TODO - implement better exception handling
+                }
+                } catch (Exception e){
                     String errorMessage = "No account found with name of [ %s ] and password of [ %s ]";
                     throw new RuntimeException(String.format(errorMessage, accountPassword, accountName));
                 }

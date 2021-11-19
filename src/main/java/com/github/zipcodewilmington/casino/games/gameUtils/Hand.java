@@ -51,9 +51,4 @@ public class Hand extends Deck {
         }
         return stringHand.toString();
     }
-
-    public Cards showHand(Integer indexOfCard){
-        return cardDeck.elementAt(indexOfCard);
-    }
-
 }
