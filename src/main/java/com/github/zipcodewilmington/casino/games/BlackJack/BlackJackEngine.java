@@ -15,6 +15,14 @@ public class BlackJackEngine {
     Hand dealerBJHand;
     Hand playerBJHand;
 
+    public Hand getDealerBJHand() {
+        return dealerBJHand;
+    }
+
+    public Hand getPlayerBJHand() {
+        return playerBJHand;
+    }
+
     public BlackJackEngine(BlackJackPlayer dealer, BlackJackPlayer player, IOConsole console) {
         this.dealer = dealer;
         this.player = player;
@@ -77,7 +85,7 @@ public class BlackJackEngine {
     }
 
     // bet cycle to validate bet amount before game
-    private int betCycle() {
+    public int betCycle() {
         Integer bet = 0;
         boolean isValidBet = false;
         do {
@@ -92,7 +100,7 @@ public class BlackJackEngine {
     }
 
     //prompt how much they want ot bet??
-    private Integer getUserBetAmount() {
+    public Integer getUserBetAmount() {
         System.out.printf("Current account balance: $%d \n", player.casinoAccount.getPlayerBalance());
         return console.getIntegerInput("How much would you like to bet? \n", "");
     }
@@ -109,7 +117,7 @@ public class BlackJackEngine {
     }
 
     //deal initial hands for player/dealer
-    private void initializePlayerHand() {
+    public void initializePlayerHand() {
         //i need 2 cards from gameDeck, so grab 2 cards
         List<Cards> initialTwoCardHand = gameDeck.drawMultipleCards(2);
         playerBJHand.add(initialTwoCardHand);
@@ -118,14 +126,14 @@ public class BlackJackEngine {
     }
 
     //dealers hand but second is hidden
-    private void initializeDealerHand() {
+    public void initializeDealerHand() {
         //i need 2 cards from gameDeck, so grab 2 cards
         List<Cards> initialTwoCardHand = gameDeck.drawMultipleCards(2);
         dealerBJHand.add(initialTwoCardHand);
         System.out.println("\nDealer's hand is " + dealerBJHand.displayAllButFirst() + ", [???]");
     }
 
-    private void displayHandTotal(Hand hand) {
+    public void displayHandTotal(Hand hand) {
         System.out.println("The total of your hand is " + getBlackJackHandTotal(hand));
     }
 

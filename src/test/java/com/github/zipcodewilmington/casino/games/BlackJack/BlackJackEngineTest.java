@@ -27,12 +27,31 @@ public class BlackJackEngineTest {
         player = new BlackJackPlayer();
         consoleTest = new IOConsole();
         systemUnderTest = new BlackJackEngine(dealer, player, consoleTest);
+
     }
 
     @Test
     public void testPlayerInitializeHand() {
+        //given
+        Hand testHandPlayer = systemUnderTest.getPlayerBJHand();
+        Integer expected = 2;
+        //when
+        systemUnderTest.initializePlayerHand();
+        Integer actual = testHandPlayer.getSize();
+        //then
+        assertEquals(expected,actual);
+    }
 
-
+    @Test
+    public void testDealerInitializeHand() {
+        //given
+        Hand testHandDealer = systemUnderTest.getDealerBJHand();
+        Integer expected = 2;
+        //when
+        systemUnderTest.initializeDealerHand();
+        Integer actual = testHandDealer.getSize();
+        //then
+        assertEquals(expected,actual);
     }
 
     @Test
