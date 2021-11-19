@@ -38,29 +38,28 @@ public class BigSixWheelEngine {
         //get player's bets
         boolean isPlayerSettingBet = true;
         int rangeNumber;
-        console.println("Pick from these Numbers: \n  [1] [2] [5] [10] [20] [40]");
+        console.println("Pick Your Numbers: \n  [$1 = 1:1] [$2 = 2:1] [$5 = 5:1] [$10 = 10:1] [$20 = 20:1] [$40 = 40:1]");
         while (isPlayerSettingBet) {
-            for(Map.Entry<Integer,Integer> playerRangeBet: playerBets.entrySet()){
+            for (Map.Entry<Integer, Integer> playerRangeBet : playerBets.entrySet()) {
                 console.println("Your Pick " + playerRangeBet.getKey() + ": Value = $" + payOutMap.get(playerRangeBet.getKey()) + ", Current Bet = $" + playerRangeBet.getValue());
             }
             console.println("Enter Tile Number (-1 to finish): ");
             rangeNumber = keyboard.nextInt();
-
-            if (rangeNumber == -1) {
-                console.println("Player's Bets Finished");
-                isPlayerSettingBet = false;
-            } else if(payOutMap.get(rangeNumber) == null) {
-                console.println("Invalid Input!");
-            } else {
-                console.println("Enter Bet Amount: ");
-                int betAmount = keyboard.nextInt();
-                if (betAmount < 0) { //no negative bets
-                    console.println("Invalid Input!");
-                } else {
-                    playerBets.put(rangeNumber, playerBets.getOrDefault(rangeNumber, 0) + betAmount);
-                }
-            }
+        if (rangeNumber == -1) {
+            console.println("Player's Bets Finished");
+            isPlayerSettingBet = false;
+        } else if (payOutMap.get(rangeNumber) == null) {
+            console.println("Invalid Input!");
+        } else {
+            console.println("Enter Bet Amount: ");
+            int betAmount = keyboard.nextInt();
+        if (betAmount < 0) { //no negative bets
+            console.println("Invalid Input!");
+        } else {
+            playerBets.put(rangeNumber, playerBets.getOrDefault(rangeNumber, 0) + betAmount);
         }
+    }
+}
         //play game
         Integer results = spinWheel();
 
@@ -70,11 +69,16 @@ public class BigSixWheelEngine {
         //prompt me if I would like to continue?
         console.println("Would you to continue?");
         String y = keyboard.next();
+        String x = keyboard.next();
         if(y.equalsIgnoreCase("YES")){
             //restart the wheel for picks and spin
             start();
         }
-            //exit game entirely
+        else{
+            if(x.equalsIgnoreCase("NO")){
+            }
+        }
+
     }
 
 
