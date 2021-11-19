@@ -28,7 +28,7 @@ public class IOConsole {
         this.output = out;
     }
 
-    public void print(String val, Object... args) {
+    public void print(String val, Object... args) { //Object... collection of objects
         output.format(ansiColor.getColor() + val, args);
     }
 
