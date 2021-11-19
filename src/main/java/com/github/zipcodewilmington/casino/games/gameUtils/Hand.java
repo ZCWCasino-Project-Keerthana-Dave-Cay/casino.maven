@@ -50,7 +50,7 @@ public class Hand extends Deck {
         return stringHand.toString();
     }
 
-    public Card showHand(Integer indexOfCard){
+    public Cards showHand(Integer indexOfCard){
         return cardDeck.elementAt(indexOfCard);
     }
 

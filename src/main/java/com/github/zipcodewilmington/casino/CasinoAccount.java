@@ -8,7 +8,7 @@ package com.github.zipcodewilmington.casino;
 public class CasinoAccount {
     private String accountName;
     private String password;
-    private Integer accountBalance = 100; //temp gave them money to test games
+    private Integer accountBalance = 0;
 
     public CasinoAccount(String accountName, String password){
         this.accountName = accountName;

@@ -73,7 +73,7 @@ public class BlackJackEngine {
 
     //list players in game
     private void welcomePlayer() {
-        System.out.printf("Welcome to the table, %s%n", player.getArcadeAccount().getAccountName());
+        System.out.printf("\n \n Welcome to the table, %s%n", player.getArcadeAccount().getAccountName());
     }
 
     // bet cycle to validate bet amount before game
@@ -111,7 +111,7 @@ public class BlackJackEngine {
     //deal initial hands for player/dealer
     private void initializePlayerHand() {
         //i need 2 cards from gameDeck, so grab 2 cards
-        List<Card> initialTwoCardHand = gameDeck.drawMultipleCards(2);
+        List<Cards> initialTwoCardHand = gameDeck.drawMultipleCards(2);
         playerBJHand.add(initialTwoCardHand);
         System.out.println("Your hand is " + playerBJHand.toString());
         displayHandTotal(playerBJHand);
@@ -120,9 +120,9 @@ public class BlackJackEngine {
     //dealers hand but second is hidden
     private void initializeDealerHand() {
         //i need 2 cards from gameDeck, so grab 2 cards
-        List<Card> initialTwoCardHand = gameDeck.drawMultipleCards(2);
+        List<Cards> initialTwoCardHand = gameDeck.drawMultipleCards(2);
         dealerBJHand.add(initialTwoCardHand);
-        System.out.println("Dealer's hand is " + dealerBJHand.displayAllButFirst() + ", [???]");
+        System.out.println("\nDealer's hand is " + dealerBJHand.displayAllButFirst() + ", [???]");
     }
 
     private void displayHandTotal(Hand hand) {
@@ -168,7 +168,7 @@ public class BlackJackEngine {
 
     private void hitAction(Hand hand) {
         System.out.println("Drawing a card... \n\n");
-        Card hitDraw = gameDeck.drawCard();
+        Cards hitDraw = gameDeck.drawCard();
         System.out.println("New Card: " + hitDraw.toString());
         hand.add(hitDraw);
         displayHandTotal(hand);
@@ -247,8 +247,10 @@ public class BlackJackEngine {
         } else if (dealerTotal < playerTotal) {
             System.out.printf("Outcome: You won! Initial Bet of %d is doubled! %d added to Casino Balance. \n", bet, (bet * 2));
             //player wins and the winnings goes into their account balance
+        } else {
+            // TODO - add other outcomes
+            //this would be of the dealer busts then??
         }
-        // TODO - add other outcomes
     }
 
     //playing again?
@@ -260,14 +262,6 @@ public class BlackJackEngine {
             dealerBJHand.clear();
             return true;
         } else {
-//            String decisionInput = console.getStringInput("Would you like to switch games?", "YES", "NO");
-//            if (decisionInput.equals("YES")){
-//                return false;
-//                //call the other 2 games without having to login
-//            } else if (decisionInput.equals("NO")){
-//                return false;
-//                //exit the casino!
-//            }
             return false;
         }
     }
@@ -277,7 +271,7 @@ public class BlackJackEngine {
         int aceCount = 0;
 
         // check if hand has an ACE
-        for (Card card: hand.getCardDeck()) {
+        for (Cards card: hand.getCardDeck()) {
             if (card.getRank().equals(Rank.Ace)) {
                 aceCount++;
             } else {
@@ -292,7 +286,6 @@ public class BlackJackEngine {
                 total += Rank.Ace.getSecondaryValue();
             }
         }
-
         return total;
     }
 }

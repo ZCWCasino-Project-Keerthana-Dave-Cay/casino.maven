@@ -1,6 +1,6 @@
 package com.github.zipcodewilmington.casino.games.BlackJack;
 
-import com.github.zipcodewilmington.casino.games.gameUtils.Card;
+import com.github.zipcodewilmington.casino.games.gameUtils.Cards;
 import com.github.zipcodewilmington.casino.games.gameUtils.Hand;
 import com.github.zipcodewilmington.casino.games.gameUtils.Rank;
 import com.github.zipcodewilmington.casino.games.gameUtils.Suit;
@@ -32,7 +32,7 @@ public class BlackJackEngineTest {
     @Test
     public void testGetBlackHandTotal(){
         //given
-        Card testCard = new Card(Rank.Two, Suit.DIAMONDS);
+        Cards testCard = new Cards(Rank.Two, Suit.DIAMONDS);
         Hand testHand = new Hand();
         testHand.add(testCard);
         Integer expected = 2;
@@ -45,9 +45,9 @@ public class BlackJackEngineTest {
     @Test
     public void testGetBlackHandTotal_with_Aces(){
         //given
-        Card testCardAceDiamonds = new Card(Rank.Ace, Suit.DIAMONDS);
-        Card testCardAceClubs = new Card(Rank.Ace, Suit.CLUBS);
-        Card testCardKing = new Card(Rank.King, Suit.DIAMONDS);
+        Cards testCardAceDiamonds = new Cards(Rank.Ace, Suit.DIAMONDS);
+        Cards testCardAceClubs = new Cards(Rank.Ace, Suit.CLUBS);
+        Cards testCardKing = new Cards(Rank.King, Suit.DIAMONDS);
 
         Hand testHand = new Hand();
         testHand.add(Arrays.asList(testCardAceClubs, testCardKing, testCardAceDiamonds));
@@ -61,9 +61,9 @@ public class BlackJackEngineTest {
     @Test
     public void testGetBlackHandTotal_with_One_Ace(){
         //given
-        Card testCardAceDiamonds = new Card(Rank.Ace, Suit.DIAMONDS);
-        Card testCardAceClubs = new Card(Rank.Ten, Suit.CLUBS);
-        Card testCardKing = new Card(Rank.King, Suit.DIAMONDS);
+        Cards testCardAceDiamonds = new Cards(Rank.Ace, Suit.DIAMONDS);
+        Cards testCardAceClubs = new Cards(Rank.Ten, Suit.CLUBS);
+        Cards testCardKing = new Cards(Rank.King, Suit.DIAMONDS);
 
         Hand testHand = new Hand();
         testHand.add(Arrays.asList(testCardAceClubs, testCardKing, testCardAceDiamonds));

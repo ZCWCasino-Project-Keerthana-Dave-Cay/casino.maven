@@ -19,9 +19,9 @@ public class Deck {
     //shuffle cards
 
     //draw a card - must be stack method
-    Stack<Card> cardDeck = new Stack<>();
+    Stack<Cards> cardDeck = new Stack<>();
 
-    public Stack<Card> getCardDeck() {
+    public Stack<Cards> getCardDeck() {
         return cardDeck;
     }
 
@@ -35,7 +35,7 @@ public class Deck {
         for (int i = 0; i < noOfDecks; i++) {
             for(Suit suit : Suit.values()) {
                 for (Rank rank : Rank.values()) {
-                    cardDeck.push(new Card(rank,suit));
+                    cardDeck.push(new Cards(rank,suit));
                 }
             }
         }
@@ -46,9 +46,9 @@ public class Deck {
     Gets the top card of the deck and removes it from the deck
      */
 
-    public Card drawCard(){
+    public Cards drawCard(){
         if(!cardDeck.isEmpty()){
-            Card drawnCard = cardDeck.pop();
+            Cards drawnCard = cardDeck.pop();
             return drawnCard;
         } else {
             System.out.println("Deck is empty");
@@ -57,11 +57,11 @@ public class Deck {
 
     }
 
-    public void setDeck(Stack<Card> cardDeck) {
+    public void setDeck(Stack<Cards> cardDeck) {
         this.cardDeck = cardDeck;
     }
 
-    public Stack<Card> getDeck() {
+    public Stack<Cards> getDeck() {
         return cardDeck;
     }
 
@@ -69,7 +69,7 @@ public class Deck {
      * @param card the Card to put on top of the deck
 
     */
-    public void add(Card card){
+    public void add(Cards card){
          cardDeck.push(card);
     }
 
@@ -77,13 +77,13 @@ public class Deck {
      * @param cards an array of Cards
 
      */
-    public void add(Card[] cards) {
-        for(Card card : cards)
+    public void add(Cards[] cards) {
+        for(Cards card : cards)
             cardDeck.push(card);
     }
 
-    public void add(List<Card> cards){
-        for(Card card : cards)
+    public void add(List<Cards> cards){
+        for(Cards card : cards)
             cardDeck.push(card);
     }
 
@@ -91,8 +91,8 @@ public class Deck {
     draws multiple cards from the deck
      */
 
-     public List<Card> drawMultipleCards(int numberOfCards) {
-         List<Card> newCards = new ArrayList<Card>();
+     public List<Cards> drawMultipleCards(int numberOfCards) {
+         List<Cards> newCards = new ArrayList<Cards>();
          for (int i = 0; i < numberOfCards; i++) {
              newCards.add(cardDeck.pop());
          }
