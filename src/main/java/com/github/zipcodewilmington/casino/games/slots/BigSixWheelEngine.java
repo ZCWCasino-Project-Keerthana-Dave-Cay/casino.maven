@@ -29,16 +29,19 @@ public class BigSixWheelEngine {
         this.console.println("Welcome to the Big Six Wheel! \n");
     }
 
-
+    //TODO - create a way to check account balance against player bets
+    //TODO - enforce a min bet to the corresponding tile value
+    //TODO - negative inputs need to be checked for
+    //TODO - make some color edits? Create a method for color changes?
     public void start() {
         reset();
         //get player's bets
         boolean isPlayerSettingBet = true;
         int rangeNumber;
-        console.println("Pick from these Numbers: \n  [$1] [$2] [$5]  [$10]  [$20] [$40]");
+        console.println("Pick from these Numbers: \n  [$1] [$2] [$5] [$10] [$20] [$40]");
         while (isPlayerSettingBet) {
             for(Map.Entry<Integer,Integer> playerRangeBet: playerBets.entrySet()){
-                console.println("Range " + playerRangeBet.getKey() + ": Value = $" + payOutMap.get(playerRangeBet.getKey()) + ", Current Bet = $" + playerRangeBet.getValue());
+                console.println("Your Pick " + playerRangeBet.getKey() + ": Value = $" + payOutMap.get(playerRangeBet.getKey()) + ", Current Bet = $" + playerRangeBet.getValue());
             }
             console.println("Enter Tile Number (-1 to finish): ");
             rangeNumber = keyboard.nextInt();
@@ -49,11 +52,6 @@ public class BigSixWheelEngine {
             } else if(payOutMap.get(rangeNumber) == null) {
                 console.println("Invalid Input!");
             } else {
-
-                //TODO - set limits on just betting on 7 tiles
-                //TODO - check account balance against player bets
-                //TODO - enforce a min bet to the corresponding tile value
-                //TODO - create an exit method
                 console.println("Enter Bet Amount: ");
                 int betAmount = keyboard.nextInt();
                 if (betAmount < 0) { //no negative bets
@@ -69,21 +67,24 @@ public class BigSixWheelEngine {
         //collect winnings
         payPlayer(results);
 
-        //prompt me if i would like to continue?
+        //prompt me if I would like to continue?
         console.println("Would you to continue?");
         String y = keyboard.next();
-        if( y.equalsIgnoreCase("YES")){
+        if(y.equalsIgnoreCase("YES")){
+            //restart the wheel for picks and spin
             start();
         }
-
+            //exit game entirely
     }
 
 
     public void payPlayer(int winningTile) {
         int payOut = 0;
+        //range of possible winnings from the wheel
         int range = bigSixWheel.getPossibleWheelHits().get(winningTile);
-        console.println("winningtile: " + winningTile + "range: " + range);
         if(playerBets.getOrDefault(range, 0) > 0){
+            //payout player if the bet matches wheel output
+            //take the bet and multiply it by the Multiplier...
             payOut += playerBets.get(range) * payOutMap.get(range);
             console.println("Paying Player $" + payOut + " in Winnings ");
         }
@@ -99,6 +100,7 @@ public class BigSixWheelEngine {
 
 
     public void reset(){
+
         playerBets.clear();
     }
 
