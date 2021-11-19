@@ -28,13 +28,17 @@ public enum Rank {
         this.secondaryValue = secondaryValue;
     }
 
-    public Integer getPrimaryValue(){
+    public Integer   getPrimaryValue(){
 
-        return this.primaryValue;
+        return  this.primaryValue;
     }
 
     public Integer getSecondaryValue(){
         return this.secondaryValue;
+    }
+
+    public String toString() {
+        return this.name();
     }
 
     public String getDisplayValue() {

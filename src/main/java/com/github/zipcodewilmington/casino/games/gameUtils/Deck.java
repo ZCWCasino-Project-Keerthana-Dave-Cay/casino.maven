@@ -54,7 +54,6 @@ public class Deck {
             System.out.println("Deck is empty");
         }
         return null;
-
     }
 
     public void setDeck(Stack<Cards> cardDeck) {

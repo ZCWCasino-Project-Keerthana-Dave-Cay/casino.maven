@@ -1,5 +1,7 @@
 package com.github.zipcodewilmington.casino.games.gameUtils;
 
+
+
 public class Hand extends Deck {
 
 
@@ -22,7 +24,7 @@ public class Hand extends Deck {
     }
 
     public Deck playerWarHand() {
-        Deck playersHandWar = new Deck();
+        Deck playersHandWar = new Deck(1);
         playersHandWar.drawMultipleCards(1);
         return playersHandWar;
     }
