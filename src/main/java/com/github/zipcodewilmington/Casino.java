@@ -31,7 +31,7 @@ public class Casino implements Runnable {
                 if (isValidLogin) {
                     String gameSelectionInput = getGameSelectionInput().toUpperCase();
                     if (gameSelectionInput.equals("BIGSIXWHEEL")) {
-                        play(new BigSixWheel(casinoAccount), new BigSixWheelPlayer(casinoAccount));
+                        play(new BigSixWheel(casinoAccount,console), new BigSixWheelPlayer(casinoAccount));
                     } else if (gameSelectionInput.equals("WAR")) { //make sure we uppercase the games
                         play(new War(), new WarPlayer());
                     } else {

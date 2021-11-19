@@ -3,6 +3,8 @@ package com.github.zipcodewilmington.casino.games.slots;
 import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.PlayerInterface;
+import com.github.zipcodewilmington.utils.AnsiColor;
+import com.github.zipcodewilmington.utils.IOConsole;
 
 
 import java.util.*;
@@ -26,13 +28,12 @@ public class BigSixWheel implements GameInterface {
     private BigSixWheelPlayer player;
 
 
-    public BigSixWheel(CasinoAccount casinoAccount){
+    public BigSixWheel(CasinoAccount casinoAccount, IOConsole console){
 
         this.casinoAccount = casinoAccount;
-        this.bigSixWheelEngine = new BigSixWheelEngine(this);
         add(new BigSixWheelPlayer(casinoAccount));
-
         setUpGame();
+        this.bigSixWheelEngine = new BigSixWheelEngine(this, console);
 
     }
 
