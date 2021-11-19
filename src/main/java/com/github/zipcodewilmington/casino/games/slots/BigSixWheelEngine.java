@@ -16,7 +16,8 @@ public class BigSixWheelEngine {
     private Map<Integer, Integer> playerBets, payOutMap;
     private Scanner keyboard;
     private final int NUM_RANGES = 6;
-    private IOConsole console;
+    private IOConsole consolePurple;
+    private IOConsole consoleCyan;
 
 
     public BigSixWheelEngine(BigSixWheel bigSixWheel, IOConsole console) {
@@ -25,8 +26,9 @@ public class BigSixWheelEngine {
         this.playerBets = new HashMap<>();
         this.keyboard = new Scanner(System.in);
         this.payOutMap = bigSixWheel.getPayOuts();
-        this.console = new IOConsole(AnsiColor.PURPLE); //constructor
-        this.console.println("Welcome to the Big Six Wheel! \n");
+        this.consolePurple = new IOConsole(AnsiColor.PURPLE);
+        this.consoleCyan = new IOConsole(AnsiColor.CYAN);//constructor
+        this.consolePurple.println("Welcome to the Big Six Wheel! \n");
     }
 
     //TODO - create a way to check account balance against player bets
@@ -38,23 +40,23 @@ public class BigSixWheelEngine {
         //get player's bets
         boolean isPlayerSettingBet = true;
         int rangeNumber;
-        console.println("Pick Your Numbers: \n  [$1 = 1:1] [$2 = 2:1] [$5 = 5:1] [$10 = 10:1] [$20 = 20:1] [$40 = 40:1]");
+        consolePurple.println("Pick Your Numbers: \n  [$1 = 1:1] [$2 = 2:1] [$5 = 5:1] [$10 = 10:1] [$20 = 20:1] [$40 = 40:1]");
         while (isPlayerSettingBet) {
             for (Map.Entry<Integer, Integer> playerRangeBet : playerBets.entrySet()) {
-                console.println("Your Pick " + playerRangeBet.getKey() + ": Value = $" + payOutMap.get(playerRangeBet.getKey()) + ", Current Bet = $" + playerRangeBet.getValue());
+                consoleCyan.println("Your Pick " + playerRangeBet.getKey() + ": Value = $" + payOutMap.get(playerRangeBet.getKey()) + ", Current Bet = $" + playerRangeBet.getValue());
             }
-            console.println("Enter Tile Number (-1 to finish): ");
+            consoleCyan.println("Enter Tile Number (-1 to finish): ");
             rangeNumber = keyboard.nextInt();
         if (rangeNumber == -1) {
-            console.println("Player's Bets Finished");
+            consoleCyan.println("Player's Bets Finished");
             isPlayerSettingBet = false;
         } else if (payOutMap.get(rangeNumber) == null) {
-            console.println("Invalid Input!");
+            consoleCyan.println("Invalid Input!");
         } else {
-            console.println("Enter Bet Amount: ");
+            consoleCyan.println("Enter Bet Amount: ");
             int betAmount = keyboard.nextInt();
         if (betAmount < 0) { //no negative bets
-            console.println("Invalid Input!");
+            consoleCyan.println("Invalid Input!");
         } else {
             playerBets.put(rangeNumber, playerBets.getOrDefault(rangeNumber, 0) + betAmount);
         }
@@ -67,7 +69,7 @@ public class BigSixWheelEngine {
         payPlayer(results);
 
         //prompt me if I would like to continue?
-        console.println("Would you to continue?");
+        consoleCyan.println("Would you to continue?");
         String y = keyboard.next();
         String x = keyboard.next();
         if(y.equalsIgnoreCase("YES")){
@@ -90,11 +92,11 @@ public class BigSixWheelEngine {
             //payout player if the bet matches wheel output
             //take the bet and multiply it by the Multiplier...
             payOut += playerBets.get(range) * payOutMap.get(range);
-            console.println("Paying Player $" + payOut + " in Winnings ");
+            consoleCyan.println("Paying Player $" + payOut + " in Winnings ");
         }
         else{
-            console.println("You did not win!");
-            console.println("Paying Player $" + payOut);
+            consoleCyan.println("You did not win!");
+            consolePurple.println("Paying Player $" + payOut);
         }
         bigSixWheel.getPlayer().getArcadeAccount().addWinningsToBalance(payOut);
         //loop back to pick your tile instead of exiting the game
