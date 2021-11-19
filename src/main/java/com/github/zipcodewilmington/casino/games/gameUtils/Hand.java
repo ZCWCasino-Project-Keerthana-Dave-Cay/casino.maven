@@ -12,7 +12,7 @@ public class Hand extends Deck {
     }
 
     public Deck dealerWarHand() {
-        Deck dealerHandWar = new Deck();
+        Deck dealerHandWar = new Deck(1);
         dealerHandWar.drawMultipleCards(1);
         return dealerHandWar;
     }
@@ -51,9 +51,4 @@ public class Hand extends Deck {
         }
         return stringHand.toString();
     }
-
-    public Cards showHand(Integer indexOfCard){
-        return cardDeck.elementAt(indexOfCard);
-    }
-
 }
