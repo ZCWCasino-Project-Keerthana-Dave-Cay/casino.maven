@@ -1,13 +1,13 @@
-package com.github.zipcodewilmington.casino.games.gameUtils;
+package com.github.zipcodewilmington.casino.games.slots;
 
 import com.github.zipcodewilmington.casino.CasinoAccount;
-import com.github.zipcodewilmington.casino.games.slots.BigSixWheel;
-import com.github.zipcodewilmington.casino.games.slots.BigSixWheelEngine;
 import com.github.zipcodewilmington.utils.IOConsole;
-import org.junit.Test;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
-public class BigSixWheelEngineTest {
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
+class BigSixWheelEngineTest {
 
     @Test
     public void testSpinWheel(){
@@ -21,4 +21,20 @@ public class BigSixWheelEngineTest {
         assertTrue(testSpin >= 0 && testSpin < testWheel.getPossibleWheelHits().size()); //testing the ranges
     }
 
+
+    @Test
+    void start() {
+    }
+
+    @Test
+    void payPlayer() {
+    }
+
+    @Test
+    void reset() {
+    }
+
+    @Test
+    void spinWheel() {
+    }
 }
