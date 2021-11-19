@@ -35,7 +35,11 @@ public class CasinoAccount {
        return accountBalance;
     }
 
-    public Integer checkBalance(Integer balance){
+    public void setBalance(Integer balance){
+        accountBalance = balance;
+    }
+
+    public Integer getAccountBalance(){
         return accountBalance;
     }
 

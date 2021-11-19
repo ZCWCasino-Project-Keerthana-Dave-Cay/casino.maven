@@ -11,7 +11,7 @@ public class Hand extends Deck {
     }
 
     public Deck dealerWarHand() {
-        Deck dealerHandWar = new Deck();
+        Deck dealerHandWar = new Deck(1);
         dealerHandWar.drawMultipleCards(1);
         return dealerHandWar;
     }
@@ -23,10 +23,8 @@ public class Hand extends Deck {
     }
 
     public Deck playerWarHand() {
-        Deck playersHandWar = new Deck();
+        Deck playersHandWar = new Deck(1);
         playersHandWar.drawMultipleCards(1);
         return playersHandWar;
-
-
     }
 }
