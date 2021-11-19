@@ -13,7 +13,7 @@ public enum Rank {
     Jack(11),
     Queen(12),
     King(13),
-    Ace(1, 11);
+    Ace(1, 14);
 
     private final Integer primaryValue;
     private final Integer secondaryValue;
@@ -35,6 +35,10 @@ public enum Rank {
 
     public Integer getSecondaryValue(){
         return this.secondaryValue;
+    }
+
+    public String toString() {
+        return this.name();
     }
 }
 //each item is public static final

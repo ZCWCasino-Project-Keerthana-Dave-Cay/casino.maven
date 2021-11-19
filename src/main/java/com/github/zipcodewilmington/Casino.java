@@ -33,7 +33,7 @@ public class Casino implements Runnable {
                     if (gameSelectionInput.equals("BIGSIXWHEEL")) {
                         play(new BigSixWheel(casinoAccount,console), new BigSixWheelPlayer(casinoAccount));
                     } else if (gameSelectionInput.equals("WAR")) { //make sure we uppercase the games
-                        play(new War(), new WarPlayer());
+                        play(new War(), new WarPlayer(casinoAccount));
                     } else {
                         // TODO - implement better exception handling
                         String errorMessage = "[ %s ] is an invalid game selection";

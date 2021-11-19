@@ -9,29 +9,22 @@ import com.github.zipcodewilmington.casino.games.gameUtils.Hand;
 /**
  * Created by leon on 7/21/2020.
  */
-public class WarPlayer implements PlayerInterface {
+public class Dealer implements PlayerInterface {
 
-    private CasinoAccount casinoAccount;
+    private Deck dealerHand;
 
-    private Deck playerHand;
-
-    public WarPlayer(CasinoAccount givenCasinoAccount) {
-        this.casinoAccount = givenCasinoAccount;
-        this.playerHand = new Hand().playerWarHand();
-        if (this.casinoAccount != null
-                && this.casinoAccount.getAccountBalance() == null) {
-            this.casinoAccount.setBalance(0);
-        }
+    public Dealer() {
+        this.dealerHand = new Hand().dealerWarHand();
     }
 
     @Override
     public CasinoAccount getArcadeAccount() {
-        return casinoAccount;
+        return null;
     }
 
     @Override
     public Cards play() {
 
-        return this.playerHand.drawCard();
+        return this.dealerHand.drawCard();
     }
 }
