@@ -22,6 +22,6 @@ public class Cards {
 
     @Override
     public String toString() {
-        return this.suit.getGraphic() + this.rank.getPrimaryValue();
+        return this.rank.getDisplayValue() + this.suit.getGraphic();
     }
 }

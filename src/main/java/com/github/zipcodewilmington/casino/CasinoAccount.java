@@ -8,7 +8,7 @@ package com.github.zipcodewilmington.casino;
 public class CasinoAccount {
     private String accountName;
     private String password;
-    private Integer accountBalance;
+    private Integer accountBalance = 0;
 
     public CasinoAccount(String accountName, String password){
         this.accountName = accountName;
@@ -41,6 +41,10 @@ public class CasinoAccount {
     }
 
     public Integer getAccountBalance(){
+        return accountBalance;
+    }
+
+    public Integer getPlayerBalance(){
         return accountBalance;
     }
 

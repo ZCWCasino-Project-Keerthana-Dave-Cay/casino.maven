@@ -6,7 +6,14 @@ import java.util.List;
 import java.util.Stack;
 
 public class Deck {
-//    List<Card> deckList = new ArrayList<>();
+
+    Deck newDeckOfCards;
+
+    public Deck() {
+
+    }
+
+    //    List<Card> deckList = new ArrayList<>();
     //reset deck
 
     //shuffle cards
@@ -18,9 +25,7 @@ public class Deck {
         return cardDeck;
     }
 
-    public Deck() {
 
-    }
 
     public Deck(int numberOdDecks) {
         collectCard(numberOdDecks);
@@ -42,16 +47,14 @@ public class Deck {
      */
 
     public Cards drawCard(){
-
         if(!cardDeck.isEmpty()){
             Cards drawnCard = cardDeck.pop();
             return drawnCard;
-        }
-        else
+        } else {
             System.out.println("Deck is empty");
+        }
         return null;
     }
-
 
     public void setDeck(Stack<Cards> cardDeck) {
         this.cardDeck = cardDeck;
@@ -74,6 +77,11 @@ public class Deck {
 
      */
     public void add(Cards[] cards) {
+        for(Cards card : cards)
+            cardDeck.push(card);
+    }
+
+    public void add(List<Cards> cards){
         for(Cards card : cards)
             cardDeck.push(card);
     }
@@ -104,6 +112,5 @@ public class Deck {
     public void clear() {
         cardDeck.clear();
     }
-
 
 }

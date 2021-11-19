@@ -13,7 +13,7 @@ public enum Rank {
     Jack(11),
     Queen(12),
     King(13),
-    Ace(1, 14);
+    Ace(1, 11);
 
     private final Integer primaryValue;
     private final Integer secondaryValue;
@@ -39,6 +39,37 @@ public enum Rank {
 
     public String toString() {
         return this.name();
+    }
+
+    public String getDisplayValue() {
+        String rankDisplay = "";
+        switch (primaryValue) {
+            case 1: rankDisplay = "A";
+                    break;
+            case 11: rankDisplay = "J";
+                    break;
+            case 12: rankDisplay = "Q";
+                    break;
+            case 13: rankDisplay = "K";
+                    break;
+            default: rankDisplay = Integer.toString(primaryValue);
+        }
+        return rankDisplay;
+    }
+
+    public Integer getBlackJackValue(){
+        Integer valueDisplay;
+        switch (primaryValue) {
+            case 1: valueDisplay = 1;
+                    break;
+            case 11:
+            case 12:
+            case 13:
+                valueDisplay = 10;
+                    break;
+            default: valueDisplay = primaryValue;
+        }
+        return valueDisplay;
     }
 }
 //each item is public static final

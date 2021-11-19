@@ -4,6 +4,8 @@ import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.CasinoAccountManager;
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.PlayerInterface;
+import com.github.zipcodewilmington.casino.games.BlackJack.BlackJack;
+import com.github.zipcodewilmington.casino.games.BlackJack.BlackJackPlayer;
 import com.github.zipcodewilmington.casino.games.numberguess.War;
 import com.github.zipcodewilmington.casino.games.numberguess.WarPlayer;
 import com.github.zipcodewilmington.casino.games.slots.BigSixWheel;
@@ -29,6 +31,11 @@ public class Casino implements Runnable {
                 CasinoAccount casinoAccount = casinoAccountManager.getAccount(accountName, accountPassword);
                 boolean isValidLogin = casinoAccount != null;
                 if (isValidLogin) {
+                    // option to add monday?
+                    // addToBalance() How much do you want to add to your account?
+                    // Long input, save that to the current casino account's balance (casinoAccount.addWinningsTolanace(input))
+
+                    // lines 39->46 will be refactored into a new method for re-usability
                     String gameSelectionInput = getGameSelectionInput().toUpperCase();
                     if (gameSelectionInput.equals("BIGSIXWHEEL")) {
                         play(new BigSixWheel(casinoAccount,console), new BigSixWheelPlayer(casinoAccount));
