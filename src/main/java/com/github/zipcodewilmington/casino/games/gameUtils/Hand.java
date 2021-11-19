@@ -54,11 +54,4 @@ public class Hand extends Deck {
         return cardDeck.elementAt(indexOfCard);
     }
 
-    public Integer getBlackJackHandTotal(){
-        Integer total = 0;
-        for (Card card: cardDeck) {
-            total += card.getRank().getBlackJackValue();
-        }
-        return total;
-    }
 }

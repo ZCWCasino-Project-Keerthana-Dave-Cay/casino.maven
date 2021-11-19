@@ -29,20 +29,28 @@ public class BlackJackEngine {
     //working on methods so far
     public void startBJGame() {
         //to start: players, deck,
+        boolean restartGame = false;
         System.out.println("Welcome to BlackJack!");
         displayRules();
         welcomePlayer();
-        betCycle();
-        // initial deal for both player and dealer
-        initializeDealerHand();
-        boolean didPlayerBust = playersTurn();
-        // player turn
-        dealersTurn();
-        // dealer turn
-        // declare winner
-        determineWinner(!didPlayerBust);
+        do {
+            int bet = betCycle();
+            // initial deal for both player and dealer
+            initializeDealerHand();
+            initializePlayerHand();
+            boolean didPlayerBust = false;
+            if (!isBlackJack(playerBJHand)) {
+                didPlayerBust = playerHitStandCycle(playerBJHand);
+            }
+            // player turn
+            dealersTurn();
+            // dealer turn
+            // declare winner
+            determineWinner(!didPlayerBust, bet);
 
-        // restart game? y/n
+            // restart game? y/n
+            restartGame = promptRestartGame();
+        } while (restartGame);
     }
 
     //create a new method that says display rules
@@ -69,25 +77,31 @@ public class BlackJackEngine {
     }
 
     // bet cycle to validate bet amount before game
-    private void betCycle() {
+    private int betCycle() {
+        Integer bet = 0;
         boolean isValidBet = false;
         do {
-            Integer bet = getUserBetAmount();
+
+            bet = getUserBetAmount();
             if (checkBet(bet)) {
                 isValidBet = true;
             }
         } while (!isValidBet);
+
+        return bet;
     }
 
-    //promt how much they want ot bet??
+    //prompt how much they want ot bet??
     private Integer getUserBetAmount() {
+        System.out.printf("Current account balance: $%d \n", player.casinoAccount.getPlayerBalance());
         return console.getIntegerInput("How much would you like to bet? \n", "");
     }
 
     //check balance to see if player had enough
-    private boolean checkBet(Integer bet) {
+    public boolean checkBet(Integer bet) {
         if (bet <= player.casinoAccount.getPlayerBalance()) {
             System.out.println("Bet accepted!");
+            player.casinoAccount.subtractBetAmountFromBalance(bet);
             return true;
         }
         System.out.println("Insufficient funds, try again!");
@@ -112,11 +126,11 @@ public class BlackJackEngine {
     }
 
     private void displayHandTotal(Hand hand) {
-        System.out.println("The total of your hand is " + hand.getBlackJackHandTotal());
+        System.out.println("The total of your hand is " + getBlackJackHandTotal(hand));
     }
 
-    private boolean validateTotal(Hand hand) {
-        return  (hand.getBlackJackHandTotal() <= 21);
+    public boolean validateTotal(Hand hand) {
+        return  (getBlackJackHandTotal(hand) <= 21);
     }
 
     private boolean playerHitStandCycle(Hand hand) {
@@ -127,7 +141,7 @@ public class BlackJackEngine {
             userDecision = hitOrStand();
             isValidHandTotal = validateTotal(hand);
 
-        } while (userDecision.equals("HIT") && isValidHandTotal);
+        } while (!userDecision.equals("STAND") && isValidHandTotal);
 
         if (!isValidHandTotal) {
             System.out.println("Oh no, you busted your hand! You lose.");
@@ -143,10 +157,11 @@ public class BlackJackEngine {
         if (userInput.equals("HIT")) {
             hitAction(playerBJHand);
         } else if (userInput.equals("STAND")) {
+            System.out.println("Player chose to stand.");
             // handle stand
             //move to the dealers turn
         } else {
-            System.out.println("Invalid action");
+            System.out.println("Invalid action, try again...");
         }
         return userInput;
     }
@@ -159,24 +174,16 @@ public class BlackJackEngine {
         displayHandTotal(hand);
     }
 
-    //build players/dealers turn
-    private boolean playersTurn() {
-        initializePlayerHand();
-        return playerHitStandCycle(playerBJHand);
-    }
-
     private void dealerHitOrStandCycle() {
-        // conditions - total is >= 17, or <= 21
-        // if <= 16, hit card
         boolean action = false;
-        Integer handTotal = dealerBJHand.getBlackJackHandTotal();
+        Integer handTotal = getBlackJackHandTotal(dealerBJHand);
 
         do {
             if (handTotal <= 16) {
                 // hit card
                 dealerBJHand.add(gameDeck.drawCard());
                 // check total
-                handTotal = dealerBJHand.getBlackJackHandTotal();
+                handTotal = getBlackJackHandTotal(dealerBJHand);
                 if (handTotal > 16 && handTotal <= 21) {
                     action = false;
                     // dealer stands loop stops action is false
@@ -191,7 +198,6 @@ public class BlackJackEngine {
             }
         } while (action);
     }
-
 
     private void dealersTurn() {
         // check if dealer has black jack
@@ -209,44 +215,85 @@ public class BlackJackEngine {
         // if dealers hand is less than 16, dealer should automatically hit
     }
 
-    private boolean isBlackJack(Hand hand){
-        return (hand.getSize() == 2) && (hand.getBlackJackHandTotal() == 21);
+    public boolean isBlackJack(Hand hand){
+        return (hand.getSize() == 2) && (getBlackJackHandTotal(hand) == 21);
     }
 
     //get winner take total of each hand and compare
-    private void determineWinner(boolean playerBust){
-        System.out.println("Turns have ended! Let's determine the winner...");
-        System.out.printf("Player's hand: %s, Player's total: %d\n\n", playerBJHand.toString(), playerBJHand.getBlackJackHandTotal());
-        System.out.printf("Player's hand: %s, Player's total: %d\n\n", dealerBJHand.toString(), dealerBJHand.getBlackJackHandTotal());
-
+    private void determineWinner(boolean playerBust, int bet){
+        System.out.println("Turns have ended! Let's determine the winner...\n");
+        System.out.printf("Player's hand: %s, Player's total: %d\n\n", playerBJHand.toString(), getBlackJackHandTotal(playerBJHand));
 
         if (playerBust) {
-            System.out.println("You bust, therefore you lose all your money!");
+            System.out.println("You bust, therefore you lose your initial bet!");
+        } else {
+            System.out.printf("Dealer's hand: %s, Dealer's total: %d\n\n", dealerBJHand.toString(), getBlackJackHandTotal(dealerBJHand));
+            distributeWinnings(bet);
         }
+    }
 
-        //        if (dealerBJHand.getBlackJackHandTotal() == playerBJHand.getBlackJackHandTotal()){
-//            //considered a push, return bet amount to player
-//        } else if (dealerBJHand.getBlackJackHandTotal() > playerBJHand.getBlackJackHandTotal()){
-//            //dealer wins and player loses their bet, so subtract bet amount??? or did we do that initially
-//        } else if (dealerBJHand.getBlackJackHandTotal() < playerBJHand.getBlackJackHandTotal()){
-//            //player wins and the winnings goes into their account balance
-//        }
+    private void distributeWinnings(int bet) {
+        Integer dealerTotal = getBlackJackHandTotal(dealerBJHand);
+        Integer playerTotal = getBlackJackHandTotal(playerBJHand);
 
-        //determine if its a blackjack..
+        if (dealerTotal.intValue() == playerTotal.intValue()) {
+            //considered a push, return bet amount to player
+            System.out.printf("Outcome: Push! Initial Bet of $%d returned to Casino Balance. \n", bet);
+            player.casinoAccount.addWinningsToBalance(bet);
+        } else if (dealerTotal > playerTotal) {
+            System.out.printf("Outcome: You lost! Initial Bet of $%d removed from Casino Balance. \n", bet);
+
+            //dealer wins and player loses their bet, so subtract bet amount??? or did we do that initially
+        } else if (dealerTotal < playerTotal) {
+            System.out.printf("Outcome: You won! Initial Bet of %d is doubled! %d added to Casino Balance. \n", bet, (bet * 2));
+            //player wins and the winnings goes into their account balance
+        }
+        // TODO - add other outcomes
     }
 
     //playing again?
-    private void doYouWantToPlayAgain(){
-        String userInput = console.getStringInput("Do you want to play again?", "YES", "NO");
+    private boolean promptRestartGame(){
+        String userInput = console.getStringInput("Do you want to play again? YES/NO", "YES", "NO");
         if (userInput.equals("YES")){
-        } else{
-            String decisionInput = console.getStringInput("Would you like to switch games?", "YES", "NO");
-            if (decisionInput.equals("YES")){
-                //call the otehr 2 games without having to login
-            } else if (decisionInput.equals("NO")){
-                //exit the casino!
+            gameDeck = new Deck(8);
+            playerBJHand.clear();
+            dealerBJHand.clear();
+            return true;
+        } else {
+//            String decisionInput = console.getStringInput("Would you like to switch games?", "YES", "NO");
+//            if (decisionInput.equals("YES")){
+//                return false;
+//                //call the other 2 games without having to login
+//            } else if (decisionInput.equals("NO")){
+//                return false;
+//                //exit the casino!
+//            }
+            return false;
+        }
+    }
+
+    public Integer getBlackJackHandTotal(Hand hand){
+        Integer total = 0;
+        int aceCount = 0;
+
+        // check if hand has an ACE
+        for (Card card: hand.getCardDeck()) {
+            if (card.getRank().equals(Rank.Ace)) {
+                aceCount++;
+            } else {
+                total += card.getRank().getBlackJackValue();
             }
         }
+
+        for (int i = 0; i < aceCount; i++) {
+            if (total + 11 > 21) {
+                total += Rank.Ace.getPrimaryValue();
+            } else {
+                total += Rank.Ace.getSecondaryValue();
+            }
+        }
+
+        return total;
     }
 }
 
