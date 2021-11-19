@@ -50,4 +50,12 @@ public class Hand extends Deck {
         return stringHand.toString();
     }
 
+    public Card showHand(Integer indexOfCard){
+        return cardDeck.elementAt(indexOfCard);
+    }
+
+    public Integer calcHandBJScore(){
+        Card card = cardDeck.elementAt(0);
+        return card.getRank().getBlackJackValue();
+    }
 }

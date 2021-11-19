@@ -52,5 +52,20 @@ public enum Rank {
         }
         return rankDisplay;
     }
+
+    public Integer getBlackJackValue(){
+        Integer valueDisplay;
+        switch (primaryValue) {
+            case 1: valueDisplay = 1;
+                    break;
+            case 11:
+            case 12:
+            case 13:
+                valueDisplay = 10;
+                    break;
+            default: valueDisplay = primaryValue;
+        }
+        return valueDisplay;
+    }
 }
 //each item is public static final
