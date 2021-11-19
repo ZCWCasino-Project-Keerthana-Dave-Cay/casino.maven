@@ -15,10 +15,10 @@ public class BlackJackEngine {
     Hand dealerBJHand;
     Hand playerBJHand;
 
-    public BlackJackEngine(BlackJackPlayer dealer, BlackJackPlayer player) {
+    public BlackJackEngine(BlackJackPlayer dealer, BlackJackPlayer player, IOConsole console) {
         this.dealer = dealer;
         this.player = player;
-        this.console = new IOConsole();
+        this.console = console;
         this.gameDeck = new Deck(8);
         this.players = new ArrayList<>();
         this.dealerBJHand = new Hand();
@@ -40,13 +40,13 @@ public class BlackJackEngine {
             initializePlayerHand();
             boolean didPlayerBust = false;
             if (!isBlackJack(playerBJHand)) {
-                didPlayerBust = playerHitStandCycle(playerBJHand);
+                didPlayerBust = !playerHitStandCycle(playerBJHand);
             }
             // player turn
             dealersTurn();
             // dealer turn
             // declare winner
-            determineWinner(!didPlayerBust, bet);
+            determineWinner(didPlayerBust, bet);
 
             // restart game? y/n
             restartGame = promptRestartGame();
@@ -133,7 +133,7 @@ public class BlackJackEngine {
         return  (getBlackJackHandTotal(hand) <= 21);
     }
 
-    private boolean playerHitStandCycle(Hand hand) {
+    public boolean playerHitStandCycle(Hand hand) {
         String userDecision;
         boolean isValidHandTotal;
 
@@ -151,7 +151,7 @@ public class BlackJackEngine {
     }
 
     //method hit if no hit stand
-    private String hitOrStand() {
+    public String hitOrStand() {
         String userInput = console.getStringInput("Would you like to HIT or STAND?", "HIT", "STAND");
         //they need to be able ot repeat it multiple times
         if (userInput.equals("HIT")) {
@@ -225,7 +225,7 @@ public class BlackJackEngine {
         System.out.printf("Player's hand: %s, Player's total: %d\n\n", playerBJHand.toString(), getBlackJackHandTotal(playerBJHand));
 
         if (playerBust) {
-            System.out.println("You bust, therefore you lose your initial bet!");
+            System.out.println("You bust, therefore you lose your initial bet! \n");
         } else {
             System.out.printf("Dealer's hand: %s, Dealer's total: %d\n\n", dealerBJHand.toString(), getBlackJackHandTotal(dealerBJHand));
             distributeWinnings(bet);
@@ -240,21 +240,20 @@ public class BlackJackEngine {
             //considered a push, return bet amount to player
             System.out.printf("Outcome: Push! Initial Bet of $%d returned to Casino Balance. \n", bet);
             player.casinoAccount.addWinningsToBalance(bet);
-        } else if (dealerTotal > playerTotal) {
+        } else if (dealerTotal > playerTotal && dealerTotal <= 21) {
             System.out.printf("Outcome: You lost! Initial Bet of $%d removed from Casino Balance. \n", bet);
-
             //dealer wins and player loses their bet, so subtract bet amount??? or did we do that initially
         } else if (dealerTotal < playerTotal) {
             System.out.printf("Outcome: You won! Initial Bet of %d is doubled! %d added to Casino Balance. \n", bet, (bet * 2));
             //player wins and the winnings goes into their account balance
-        } else {
-            // TODO - add other outcomes
+        } else if(dealerTotal > 21) {
             //this would be of the dealer busts then??
+            System.out.printf("Dealer busted, you win! Initial Bet of $%d is double! %d added to Casino Balance. \n", bet);
         }
     }
 
     //playing again?
-    private boolean promptRestartGame(){
+    public boolean promptRestartGame(){
         String userInput = console.getStringInput("Do you want to play again? YES/NO", "YES", "NO");
         if (userInput.equals("YES")){
             gameDeck = new Deck(8);

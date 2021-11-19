@@ -2,6 +2,7 @@ package com.github.zipcodewilmington.casino.games.BlackJack;
 import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.GameInterface;
 import com.github.zipcodewilmington.casino.PlayerInterface;
+import com.github.zipcodewilmington.utils.IOConsole;
 
 public class BlackJack implements GameInterface {
     BlackJackPlayer blackJackPlayer;
@@ -28,7 +29,7 @@ public class BlackJack implements GameInterface {
 
     @Override
     public void run() {
-        runTheBJGame = new BlackJackEngine(blackJackDealer, blackJackPlayer);
+        runTheBJGame = new BlackJackEngine(blackJackDealer, blackJackPlayer, new IOConsole());
         runTheBJGame.startBJGame();
     }
 
