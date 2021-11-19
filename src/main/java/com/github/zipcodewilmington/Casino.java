@@ -38,8 +38,8 @@ public class Casino implements Runnable {
                     // lines 39->46 will be refactored into a new method for re-usability
                     String gameSelectionInput = getGameSelectionInput().toUpperCase();
                     if (gameSelectionInput.equals("BIGSIXWHEEL")) {
-                        play(new BigSixWheel(), new BigSixWheelPlayer());
-                    } else if (gameSelectionInput.equals("WAR")) {
+                        play(new BigSixWheel(casinoAccount,console), new BigSixWheelPlayer(casinoAccount));
+                    } else if (gameSelectionInput.equals("WAR")) { //make sure we uppercase the games
                         play(new War(), new WarPlayer());
                     } else if (gameSelectionInput.equals("BLACKJACK")){
                         play(new BlackJack(casinoAccount), new BlackJackPlayer());
@@ -64,17 +64,6 @@ public class Casino implements Runnable {
         } while (!"logout".equals(arcadeDashBoardInput));
     }
 
-    public void gameSelectorMenu(CasinoAccount casinoAccount) {
-        String gameSelectionInput = getGameSelectionInput().toUpperCase();
-        if (gameSelectionInput.equals("BIGSIXWHEEL")) {
-            play(new BigSixWheel(), new BigSixWheelPlayer());
-        } else if (gameSelectionInput.equals("WAR")) {
-            play(new War(), new WarPlayer());
-        } else if (gameSelectionInput.equals("BLACKJACK")){
-            play(new BlackJack(casinoAccount), new BlackJackPlayer());
-        }
-    }
-
     private String getArcadeDashboardInput() {
         return console.getStringInput(new StringBuilder()
                 .append("Welcome to the Arcade Dashboard!")
@@ -87,7 +76,7 @@ public class Casino implements Runnable {
         return console.getStringInput(new StringBuilder()
                 .append("Welcome to the Game Selection Dashboard!")
                 .append("\nFrom here, you can select any of the following options:")
-                .append("\n\t[ BIGSIXWHEEL ], [ WAR ], [ BLACKJACK ]")
+                .append("\n\t[ BigSixWheel ], [ War ]")
                 .toString());
     }
 

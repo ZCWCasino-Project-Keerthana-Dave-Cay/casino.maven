@@ -13,6 +13,7 @@ public class CasinoAccount {
     public CasinoAccount(String accountName, String password){
         this.accountName = accountName;
         this.password = password;
+        this.accountBalance = 0;
     }
 
     public String getAccountName() {
