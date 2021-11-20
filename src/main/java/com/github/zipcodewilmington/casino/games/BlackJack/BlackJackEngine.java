@@ -1,6 +1,7 @@
 package com.github.zipcodewilmington.casino.games.BlackJack;
 
 import com.github.zipcodewilmington.casino.games.gameUtils.*;
+import com.github.zipcodewilmington.utils.AnsiColor;
 import com.github.zipcodewilmington.utils.IOConsole;
 
 import java.util.ArrayList;
@@ -14,6 +15,16 @@ public class BlackJackEngine {
     List<BlackJackPlayer> players;
     Hand dealerBJHand;
     Hand playerBJHand;
+    IOConsole ansiColorConsole;
+
+    final String BLACKJACK_RULES = "1. The goal of the game is to beat the dealer's hand without going over 21. \n" +
+            "2. Face cards are worth 10. \n" +
+            "3. Each player starts with two cards, one of the dealer's cards will be hidden until the end. \n" +
+            "4. To 'Hit' is to ask for another card. \n" +
+            "5. If you go over 21, you bust and the dealer wins regardless of their hand.\n" +
+            "6. If you are dealt 21 from the start (Ace and 10), you got a Blackjack! \n" +
+            "7. If you win the hand you win 1x your bet, if you get a BlackJack, you win 2x your bet. \n" +
+            "8. If your card value is equal to the dealer (Push), bet amount is returned.";
 
     public Hand getDealerBJHand() {
         return dealerBJHand;
@@ -31,6 +42,7 @@ public class BlackJackEngine {
         this.players = new ArrayList<>();
         this.dealerBJHand = new Hand();
         this.playerBJHand = new Hand();
+        this.ansiColorConsole = new IOConsole(AnsiColor.CYAN);
     }
 
     //when they first start game, sout what the rules/actions
@@ -38,24 +50,19 @@ public class BlackJackEngine {
     public void startBJGame() {
         //to start: players, deck,
         boolean restartGame = false;
-        System.out.println("Welcome to BlackJack!");
+        System.out.println("♥◆♧♠ Welcome to BlackJack! ♠♧◆♥");
         displayRules();
         welcomePlayer();
         do {
             int bet = betCycle();
-            // initial deal for both player and dealer
             initializeDealerHand();
             initializePlayerHand();
             boolean didPlayerBust = false;
             if (!isBlackJack(playerBJHand)) {
                 didPlayerBust = !playerHitStandCycle(playerBJHand);
             }
-            // player turn
             dealersTurn();
-            // dealer turn
-            // declare winner
             determineWinner(didPlayerBust, bet);
-
             // restart game? y/n
             restartGame = promptRestartGame();
         } while (restartGame);
@@ -64,23 +71,14 @@ public class BlackJackEngine {
     //create a new method that says display rules
     public void displayRules() {
         String userInput =
-                console.getStringInput("Would you like to see the rules? \n " +
+                ansiColorConsole.getStringInput("Would you like to see the rules? \n " +
                         "YES/NO", "YES", "NO");
-
         if (userInput.equals("YES")) {
-            System.out.println("1. The goal of the game is to beat the dealer's hand without going over 21. \n" +
-                    "2. Face cards are worth 10. \n" +
-                    "3. Each player starts with two cards, one of the dealer's cards will be hidden until the end. \n" +
-                    "4. To 'Hit' is to ask for another card. \n" +
-                    "5. If you go over 21, you bust and the dealer wins regardless of their hand.\n" +
-                    "6. If you are dealt 21 from the start (Ace and 10), you got a Blackjack! \n" +
-                    "7. If you win the hand you win 1x your bet, if you get a BlackJack, you win 2x your bet. \n" +
-                    "8. If your card value is equal to the dealer (Push), bet amount is returned.");
+            System.out.println(BLACKJACK_RULES);
         }
     }
 
-    //list players in game
-    private void welcomePlayer() {
+    public void welcomePlayer() {
         System.out.printf("\n \n Welcome to the table, %s%n", player.getArcadeAccount().getAccountName());
     }
 
@@ -89,7 +87,6 @@ public class BlackJackEngine {
         Integer bet = 0;
         boolean isValidBet = false;
         do {
-
             bet = getUserBetAmount();
             if (checkBet(bet)) {
                 isValidBet = true;
@@ -99,7 +96,6 @@ public class BlackJackEngine {
         return bet;
     }
 
-    //prompt how much they want ot bet??
     public Integer getUserBetAmount() {
         System.out.printf("Current account balance: $%d \n", player.casinoAccount.getPlayerBalance());
         return console.getIntegerInput("How much would you like to bet? \n", "");
@@ -182,7 +178,7 @@ public class BlackJackEngine {
         displayHandTotal(hand);
     }
 
-    private void dealerHitOrStandCycle() {
+    public void dealerHitOrStandCycle() {
         boolean action = false;
         Integer handTotal = getBlackJackHandTotal(dealerBJHand);
 
