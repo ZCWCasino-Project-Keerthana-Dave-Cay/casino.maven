@@ -1,10 +1,7 @@
 package com.github.zipcodewilmington.casino.games.BlackJack;
 
 import com.github.zipcodewilmington.casino.CasinoAccount;
-import com.github.zipcodewilmington.casino.games.gameUtils.Cards;
-import com.github.zipcodewilmington.casino.games.gameUtils.Hand;
-import com.github.zipcodewilmington.casino.games.gameUtils.Rank;
-import com.github.zipcodewilmington.casino.games.gameUtils.Suit;
+import com.github.zipcodewilmington.casino.games.gameUtils.*;
 import com.github.zipcodewilmington.utils.IOConsole;
 import org.junit.Assert;
 import org.junit.Before;
@@ -16,6 +13,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,6 +22,7 @@ public class BlackJackEngineTest {
     BlackJackPlayer dealer;
     BlackJackPlayer player;
     IOConsole consoleTest;
+    Deck testCards;
 
     @Before
     public void setUp() throws Exception {
@@ -140,23 +139,23 @@ public class BlackJackEngineTest {
         assertTrue(outContent.toString().contains(systemWithFakeInput.BLACKJACK_RULES));
     }
 
-    //    @Test
-//    public void testWhenDealerHasBlackJack() {
-//        //given
-//        Hand testDealerHand = new Hand();
-//        List<Cards> drawnCards = new ArrayList<>();
-//        drawnCards.add(new Cards(Rank.Ace, Suit.DIAMONDS));
-//        drawnCards.add(new Cards(Rank.King, Suit.DIAMONDS));
-//        testDealerHand.add(drawnCards);
-//
-//        System.setIn(new ByteArrayInputStream("STAND".getBytes()));
-//        BlackJackEngine systemWithFakeInput = new BlackJackEngine(dealer, player, new IOConsole());
-//        systemWithFakeInput.dealerBJHand = testDealerHand;
-//        //when
-//        boolean actual = systemWithFakeInput.dealerHitOrStandCycle();
-//        //then
-//        assertTrue(actual);
-//    }
+    @Test
+    public void testWhenDealerHasBlackJack() {
+        //given
+        Hand testDealerHand = new Hand();
+        List<Cards> drawnCards = new ArrayList<>();
+        drawnCards.add(new Cards(Rank.Ace, Suit.DIAMONDS));
+        drawnCards.add(new Cards(Rank.King, Suit.DIAMONDS));
+        testDealerHand.add(drawnCards);
+        Integer expectedHandSize = 2;
+        systemUnderTest.dealerBJHand.add(drawnCards);
+        // when
+        systemUnderTest.dealerHitOrStandCycle();
+        Integer actual = systemUnderTest.dealerBJHand.getSize();
+
+        //then
+        assertEquals(expectedHandSize, actual);
+    }
 
     @Test
     public void testBetCycle_Accepted(){
@@ -236,6 +235,141 @@ public class BlackJackEngineTest {
 
     @Test
     public void testValidateTotal(){
+        //given
+        Hand testHand = new Hand();
+        List<Cards> drawnCards = new ArrayList<>();
+        drawnCards.add(new Cards(Rank.Ace, Suit.DIAMONDS));
+        drawnCards.add(new Cards(Rank.King, Suit.DIAMONDS));
+        testHand.add(drawnCards);
+        //from lines 110-111 this is for fake input when testing user input methods
+        //when
+        boolean actual = systemUnderTest.validateTotal(testHand);
+        //then
+        assertTrue(actual);
+    }
+
+    @Test
+    public void testIsBlackJack(){
+        //given
+        Hand testHand = new Hand();
+        List<Cards> drawnCards = new ArrayList<>();
+        drawnCards.add(new Cards(Rank.Ace, Suit.DIAMONDS));
+        drawnCards.add(new Cards(Rank.King, Suit.DIAMONDS));
+        testHand.add(drawnCards);
+        //from lines 110-111 this is for fake input when testing user input methods
+        //when
+        boolean actual = systemUnderTest.isBlackJack(testHand);
+        //then
+        assertTrue(actual);
+    }
+
+    @Test
+    public void testGetBlackJackHandTotalWithBlackJack() {
+        //given
+        Hand testDealerHand = new Hand();
+        List<Cards> drawnCards = new ArrayList<>();
+        drawnCards.add(new Cards(Rank.Ace, Suit.DIAMONDS));
+        drawnCards.add(new Cards(Rank.King, Suit.DIAMONDS));
+        testDealerHand.add(drawnCards);
+        Integer expectedHandValue = 21;
+        // when
+        Integer actualBlackJack = systemUnderTest.getBlackJackHandTotal(testDealerHand);
+        //then
+        assertEquals(expectedHandValue, actualBlackJack);
 
     }
+
+    @Test
+    public void testWhenDealerDoeNotHaveBJ_But_Lower_Than_21() {
+        //given
+        Stack<Cards> testCards = new Stack<>();
+        testCards.add(new Cards(Rank.Two, Suit.DIAMONDS));
+        testCards.add(new Cards(Rank.Two, Suit.SPADES));
+        testCards.add(new Cards(Rank.Two, Suit.CLUBS));
+        testCards.add(new Cards(Rank.Three, Suit.DIAMONDS));
+        testCards.add(new Cards(Rank.Three, Suit.SPADES));
+        testCards.add(new Cards(Rank.Three, Suit.CLUBS));
+        testCards.add(new Cards(Rank.Four, Suit.DIAMONDS));
+        testCards.add(new Cards(Rank.Four, Suit.SPADES));
+        testCards.add(new Cards(Rank.Four, Suit.CLUBS));
+        Hand testDealerHand = new Hand();
+        List<Cards> drawnCards = new ArrayList<>();
+        drawnCards.add(new Cards(Rank.Two, Suit.DIAMONDS));
+        drawnCards.add(new Cards(Rank.Two, Suit.DIAMONDS));
+        testDealerHand.add(drawnCards);
+        Integer expectedHandSize = 4;
+        systemUnderTest.dealerBJHand.add(drawnCards);
+        // when
+        systemUnderTest.dealerHitOrStandCycle();
+        Integer actual = systemUnderTest.dealerBJHand.getSize();
+
+        //then
+        assertEquals(expectedHandSize, actual);
+    }
+
+    @Test
+    public void testWhenDealerDoeNotHaveBJ_But_Busts() {
+        //given
+        Stack<Cards> testCards = new Stack<>();
+        testCards.add(new Cards(Rank.Queen, Suit.SPADES));
+        testCards.add(new Cards(Rank.Queen, Suit.CLUBS));
+        testCards.add(new Cards(Rank.King, Suit.DIAMONDS));
+        testCards.add(new Cards(Rank.King, Suit.SPADES));
+        testCards.add(new Cards(Rank.King, Suit.CLUBS));
+        Hand testDealerHand = new Hand();
+        List<Cards> drawnCards = new ArrayList<>();
+        drawnCards.add(new Cards(Rank.Jack, Suit.DIAMONDS));
+        drawnCards.add(new Cards(Rank.Six, Suit.CLUBS));
+        testDealerHand.add(drawnCards);
+        Integer expectedHandSize = 3;
+        systemUnderTest.dealerBJHand.add(drawnCards);
+        // when
+        systemUnderTest.dealerHitOrStandCycle();
+        Integer actual = systemUnderTest.dealerBJHand.getSize();
+
+        //then
+        assertEquals(expectedHandSize, actual);
+    }
+
+    @Test
+    public void testRestartGamePrompt_No(){
+        //given
+        System.setIn(new ByteArrayInputStream("NO".getBytes()));
+        BlackJackEngine systemWithFakeInput = new BlackJackEngine(dealer, player, new IOConsole());
+        //when
+        boolean actual = systemWithFakeInput.promptRestartGame();
+        //then
+        assertFalse(actual);
+    }
+
+    @Test
+    public void testRestartGamePrompt_Yes(){
+        //given
+        System.setIn(new ByteArrayInputStream("YES".getBytes()));
+        BlackJackEngine systemWithFakeInput = new BlackJackEngine(dealer, player, new IOConsole());
+        //when
+        boolean actual = systemWithFakeInput.promptRestartGame();
+        //then
+        assertTrue(actual);
+    }
+
+    @Test
+    public void testHitAction() {
+        //given
+        Hand testDealerHand = new Hand();
+        List<Cards> drawnCards = new ArrayList<>();
+        drawnCards.add(new Cards(Rank.Ace, Suit.DIAMONDS));
+        drawnCards.add(new Cards(Rank.Three, Suit.DIAMONDS));
+        testDealerHand.add(drawnCards);
+        Integer expectedHandSize = 2;
+        systemUnderTest.playerBJHand.add(drawnCards);
+        // when
+        systemUnderTest.hitAction(testDealerHand);
+        Integer actual = systemUnderTest.playerBJHand.getSize();
+
+        //then
+        assertEquals(expectedHandSize, actual);
+    }
+
+
 }

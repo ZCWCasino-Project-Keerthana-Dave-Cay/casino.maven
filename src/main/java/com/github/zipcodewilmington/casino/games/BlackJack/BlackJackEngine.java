@@ -45,8 +45,6 @@ public class BlackJackEngine {
         this.ansiColorConsole = new IOConsole(AnsiColor.CYAN);
     }
 
-    //when they first start game, sout what the rules/actions
-    //working on methods so far
     public void startBJGame() {
         //to start: players, deck,
         boolean restartGame = false;
@@ -170,7 +168,7 @@ public class BlackJackEngine {
         return userInput;
     }
 
-    private void hitAction(Hand hand) {
+    public void hitAction(Hand hand) {
         System.out.println("Drawing a card... \n\n");
         Cards hitDraw = gameDeck.drawCard();
         System.out.println("New Card: " + hitDraw.toString());
@@ -213,10 +211,6 @@ public class BlackJackEngine {
             dealerHitOrStandCycle();
             // do hit or stand turns
         }
-        // dealer starts when player is done
-        // AI will check card
-
-        // if dealers hand is less than 16, dealer should automatically hit
     }
 
     public boolean isBlackJack(Hand hand){
