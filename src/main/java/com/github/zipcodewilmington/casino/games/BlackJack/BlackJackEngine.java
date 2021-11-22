@@ -77,7 +77,7 @@ public class BlackJackEngine {
     }
 
     public void welcomePlayer() {
-        System.out.printf("\n \n Welcome to the table, %s%n", player.getArcadeAccount().getAccountName());
+        System.out.printf("\n \n Welcome to the table, %s%n", player.getArcadeAccount().getAccountName() + "!");
     }
 
     // bet cycle to validate bet amount before game
@@ -117,10 +117,10 @@ public class BlackJackEngine {
         //i need 2 cards from gameDeck, so grab 2 cards
         List<Cards> initialTwoCardHand = gameDeck.drawMultipleCards(2);
         dealerBJHand.add(initialTwoCardHand);
-        System.out.println("\nDealer's hand is " + dealerBJHand.displayAllButFirst() + ", [???]");
+        System.out.println("\nDealer's hand is " + dealerBJHand.displayAllButFirst() + ", [???] \n");
     }
     public void displayHandTotal(Hand hand) {
-        System.out.println("The total of your hand is " + getBlackJackHandTotal(hand));
+        System.out.println("The total of your hand is " + getBlackJackHandTotal(hand) + "\n");
     }
 
     public boolean validateTotal(Hand hand) {
