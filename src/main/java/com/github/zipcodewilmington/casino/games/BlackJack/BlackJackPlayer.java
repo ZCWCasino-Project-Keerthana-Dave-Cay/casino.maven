@@ -2,6 +2,7 @@ package com.github.zipcodewilmington.casino.games.BlackJack;
 
 import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.PlayerInterface;
+import com.github.zipcodewilmington.casino.games.gameUtils.Hand;
 
 public class BlackJackPlayer implements PlayerInterface {
     CasinoAccount casinoAccount;
@@ -29,4 +30,8 @@ public class BlackJackPlayer implements PlayerInterface {
     //set bet amount
     //set bet multiplier
     //collect winnings
+
+    public void clearHand(Hand hand){
+        hand.clear();
+    }
 }

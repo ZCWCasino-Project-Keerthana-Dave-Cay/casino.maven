@@ -10,9 +10,7 @@ public class Deck {
     Deck newDeckOfCards;
 
     public Deck() {
-
     }
-
     //    List<Card> deckList = new ArrayList<>();
     //reset deck
 
