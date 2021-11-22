@@ -195,4 +195,17 @@ public class WarGameTest {
         // then
         Assertions.assertEquals(expectedAmount , account.getAccountBalance());
     }
+
+    @Test
+    public void testGame_displayCard() {
+
+        // Given
+        Cards playerCards = new Cards(Rank.Ace, Suit.DIAMONDS);
+
+        // when
+        warEngine.displayCard(playerCards);
+
+        // then
+        Assertions.assertNotNull(warEngine);
+    }
 }

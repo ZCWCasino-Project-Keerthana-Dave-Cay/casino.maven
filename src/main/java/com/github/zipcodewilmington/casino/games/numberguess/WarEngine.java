@@ -128,7 +128,7 @@ public class WarEngine {
         }
     }
 
-    private void displayCard(Cards card) {
+    public void displayCard(Cards card) {
         cardConsole.println("-------------");
         cardConsole.println("|\t\t%s  |", getDisplayValue(card.getRank()));
         cardConsole.println("| \t  %s   \t|", card.getSuit().getGraphic());
