@@ -35,4 +35,8 @@ public class War implements GameInterface {
         WarEngine warEngine = new WarEngine(dealer, player);
         warEngine.startGame();
     }
+
+    public WarPlayer getPlayer() {
+        return player;
+    }
 }
