@@ -69,7 +69,7 @@ public class BlackJackEngine {
     //create a new method that says display rules
     public void displayRules() {
         String userInput =
-                ansiColorConsole.getStringInput("Would you like to see the rules? \n " +
+                console.getStringInput("Would you like to see the rules? \n " +
                         "YES/NO", "YES", "NO");
         if (userInput.equals("YES")) {
             System.out.println(BLACKJACK_RULES);
@@ -209,7 +209,6 @@ public class BlackJackEngine {
         } else if (dealerTotal < playerTotal) {
             System.out.printf("Outcome: You won! Initial Bet of %d is doubled! %d added to Casino Balance. \n", bet, (bet * 2));
         } else if(dealerTotal > 21) {
-            //this would be of the dealer busts then??
             System.out.printf("Dealer busted, you win! Initial Bet of %d is double! %d added to Casino Balance. \n", bet, bet);
         }
     }
