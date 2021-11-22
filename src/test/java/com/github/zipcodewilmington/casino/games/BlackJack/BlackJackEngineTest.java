@@ -3,13 +3,12 @@ package com.github.zipcodewilmington.casino.games.BlackJack;
 import com.github.zipcodewilmington.casino.CasinoAccount;
 import com.github.zipcodewilmington.casino.games.gameUtils.*;
 import com.github.zipcodewilmington.utils.IOConsole;
+import com.oracle.tools.packager.IOUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -124,7 +123,7 @@ public class BlackJackEngineTest {
     }
 
     @Test
-    public void testPlayerWantsToSeeRules() {
+    public void testPlayerWantsToSeeRules_Yes() {
         // given
         String playerResponse = "YES";
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -137,6 +136,22 @@ public class BlackJackEngineTest {
 
         // then
         assertTrue(outContent.toString().contains(systemWithFakeInput.BLACKJACK_RULES));
+    }
+
+    @Test
+    public void testPlayerWantsToSeeRules_No() {
+        // given
+        String playerResponse = "NO";
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        System.setIn(new ByteArrayInputStream(playerResponse.getBytes()));
+
+        // when
+        BlackJackEngine systemWithFakeInput = new BlackJackEngine(dealer, player, new IOConsole());
+        systemWithFakeInput.displayRules();
+
+        // then
+        assertFalse(outContent.toString().contains(systemWithFakeInput.BLACKJACK_RULES));
     }
 
     @Test
@@ -298,13 +313,13 @@ public class BlackJackEngineTest {
         drawnCards.add(new Cards(Rank.Two, Suit.DIAMONDS));
         testDealerHand.add(drawnCards);
         Integer expectedHandSize = 4;
+
         systemUnderTest.dealerBJHand.add(drawnCards);
         // when
         systemUnderTest.dealerHitOrStandCycle();
         Integer actual = systemUnderTest.dealerBJHand.getSize();
-
         //then
-        assertEquals(expectedHandSize, actual);
+        assertTrue(actual > 2);
     }
 
     @Test
@@ -366,10 +381,170 @@ public class BlackJackEngineTest {
         // when
         systemUnderTest.hitAction(testDealerHand);
         Integer actual = systemUnderTest.playerBJHand.getSize();
-
         //then
         assertEquals(expectedHandSize, actual);
     }
 
+    @Test
+    public void testDistributeWinnings_Push() {
+        //given
+        CasinoAccount testPlayer = new CasinoAccount("cay", "1");
+        testPlayer.addWinningsToBalance(1000);
+        player.setCasinoAccount(testPlayer);
 
+        Hand testDealerHand = new Hand();
+        List<Cards> drawnCards = new ArrayList<>();
+        drawnCards.add(new Cards(Rank.Ace, Suit.DIAMONDS));
+        drawnCards.add(new Cards(Rank.Three, Suit.DIAMONDS));
+        testDealerHand.add(drawnCards);
+
+        //given
+        Hand testPlayerHand = new Hand();
+        List<Cards> drawnCardsForPlayer = new ArrayList<>();
+        drawnCardsForPlayer.add(new Cards(Rank.Ace, Suit.DIAMONDS));
+        drawnCardsForPlayer.add(new Cards(Rank.Three, Suit.DIAMONDS));
+        testPlayerHand.add(drawnCardsForPlayer);
+
+        BlackJackEngine newTestEngine = new BlackJackEngine(dealer, player, new IOConsole());
+        newTestEngine.playerBJHand = testPlayerHand;
+        newTestEngine.dealerBJHand = testDealerHand;
+
+        //when
+        newTestEngine.distributeWinnings(10);
+        assertTrue(newTestEngine.getBlackJackHandTotal(testPlayerHand) ==
+                newTestEngine.getBlackJackHandTotal(testDealerHand));
+
+        //then
+    }
+
+    @Test
+    public void testDistributeWinnings_DealerWin() {
+        //given
+        CasinoAccount testPlayer = new CasinoAccount("cay", "1");
+        testPlayer.addWinningsToBalance(1000);
+        player.setCasinoAccount(testPlayer);
+
+        Hand testDealerHand = new Hand();
+        List<Cards> drawnCards = new ArrayList<>();
+        drawnCards.add(new Cards(Rank.Ace, Suit.DIAMONDS));
+        drawnCards.add(new Cards(Rank.Ten, Suit.DIAMONDS));
+        testDealerHand.add(drawnCards);
+
+        Hand testPlayerHand = new Hand();
+        List<Cards> drawnCardsForPlayer = new ArrayList<>();
+        drawnCardsForPlayer.add(new Cards(Rank.Ace, Suit.DIAMONDS));
+        drawnCardsForPlayer.add(new Cards(Rank.Three, Suit.DIAMONDS));
+        testPlayerHand.add(drawnCardsForPlayer);
+
+        BlackJackEngine newTestEngine = new BlackJackEngine(dealer, player, new IOConsole());
+        newTestEngine.playerBJHand = testPlayerHand;
+        newTestEngine.dealerBJHand = testDealerHand;
+
+        //when
+        newTestEngine.distributeWinnings(10);
+        //then
+        assertTrue(newTestEngine.getBlackJackHandTotal(testPlayerHand) <
+                newTestEngine.getBlackJackHandTotal(testDealerHand));
+
+    }
+
+    @Test
+    public void testDistributeWinnings_PlayerWin() {
+        //given
+        CasinoAccount testPlayer = new CasinoAccount("cay", "1");
+        testPlayer.addWinningsToBalance(1000);
+        player.setCasinoAccount(testPlayer);
+        Hand testDealerHand = new Hand();
+        List<Cards> drawnCards = new ArrayList<>();
+        drawnCards.add(new Cards(Rank.Ace, Suit.DIAMONDS));
+        drawnCards.add(new Cards(Rank.Three, Suit.DIAMONDS));
+        testDealerHand.add(drawnCards);
+
+        Hand testPlayerHand = new Hand();
+        List<Cards> drawnCardsForPlayer = new ArrayList<>();
+        drawnCardsForPlayer.add(new Cards(Rank.Ace, Suit.DIAMONDS));
+        drawnCardsForPlayer.add(new Cards(Rank.Ten, Suit.DIAMONDS));
+        testPlayerHand.add(drawnCardsForPlayer);
+
+        BlackJackEngine newTestEngine = new BlackJackEngine(dealer, player, new IOConsole());
+        newTestEngine.playerBJHand = testPlayerHand;
+        newTestEngine.dealerBJHand = testDealerHand;
+
+        //when
+        newTestEngine.distributeWinnings(10);
+        //then
+        assertTrue(newTestEngine.getBlackJackHandTotal(testPlayerHand) >
+                newTestEngine.getBlackJackHandTotal(testDealerHand));
+    }
+
+    @Test
+    public void testDistributeWinnings_DealerOver21() {
+        //given
+        CasinoAccount testPlayer = new CasinoAccount("cay", "1");
+        testPlayer.addWinningsToBalance(1000);
+        player.setCasinoAccount(testPlayer);
+        Hand testDealerHand = new Hand();
+        List<Cards> drawnCards = new ArrayList<>();
+        drawnCards.add(new Cards(Rank.Ten, Suit.CLUBS));
+        drawnCards.add(new Cards(Rank.Three, Suit.DIAMONDS));
+        drawnCards.add(new Cards(Rank.Ten, Suit.DIAMONDS));
+        testDealerHand.add(drawnCards);
+
+        BlackJackEngine newTestEngine = new BlackJackEngine(dealer, player, new IOConsole());
+        newTestEngine.dealerBJHand = testDealerHand;
+
+        //when
+        newTestEngine.distributeWinnings(10);
+        //then
+        assertTrue(newTestEngine.getBlackJackHandTotal(testDealerHand) > 21);
+    }
+
+    @Test
+    public void testDetermineWinner_IfPlayerBusts() {
+        // given
+        CasinoAccount testPlayer = new CasinoAccount("cay", "1");
+        testPlayer.addWinningsToBalance(1000);
+        player.setCasinoAccount(testPlayer);
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        String expected = "You bust, therefore you lose your initial bet!";
+
+        // when
+        BlackJackEngine systemWithFakeInput = new BlackJackEngine(dealer, player, new IOConsole());
+        systemWithFakeInput.determineWinner(true, 10);
+
+        // then
+        assertTrue(outContent.toString().contains(expected));
+    }
+
+    @Test
+    public void testDetermineWinner_IfPlayerDoesntBust() {
+        // given
+        CasinoAccount testPlayer = new CasinoAccount("cay", "1");
+        testPlayer.addWinningsToBalance(1000);
+        player.setCasinoAccount(testPlayer);
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        String expected = "Dealer's hand: %s, Dealer's total: %d\n\n";
+
+        // when
+        BlackJackEngine systemWithFakeInput = new BlackJackEngine(dealer, player, new IOConsole());
+        systemWithFakeInput.determineWinner(false, 10);
+
+        // then
+        assertFalse(outContent.toString().contains(expected));
+    }
+
+    @Test
+    public void testWelcomePlayer() {
+        // given
+        CasinoAccount testPlayer = new CasinoAccount("cay", "1");
+        testPlayer.addWinningsToBalance(1000);
+        player.setCasinoAccount(testPlayer);
+        String expected = "\n \n Welcome to the table, %s%n";
+        //when
+        systemUnderTest.welcomePlayer();
+        //then
+        assertEquals(expected, "\n \n Welcome to the table, %s%n");
+    }
 }

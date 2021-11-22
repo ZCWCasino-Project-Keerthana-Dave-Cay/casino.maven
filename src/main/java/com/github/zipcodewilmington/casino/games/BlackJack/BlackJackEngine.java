@@ -93,13 +93,10 @@ public class BlackJackEngine {
 
         return bet;
     }
-
     public Integer getUserBetAmount() {
         System.out.printf("Current account balance: $%d \n", player.casinoAccount.getPlayerBalance());
         return console.getIntegerInput("How much would you like to bet? \n", "");
     }
-
-    //check balance to see if player had enough
     public boolean checkBet(Integer bet) {
         if (bet <= player.casinoAccount.getPlayerBalance()) {
             System.out.println("Bet accepted!");
@@ -109,16 +106,12 @@ public class BlackJackEngine {
         System.out.println("Insufficient funds, try again!");
         return false;
     }
-
-    //deal initial hands for player/dealer
     public void initializePlayerHand() {
-        //i need 2 cards from gameDeck, so grab 2 cards
         List<Cards> initialTwoCardHand = gameDeck.drawMultipleCards(2);
         playerBJHand.add(initialTwoCardHand);
         System.out.println("Your hand is " + playerBJHand.toString());
         displayHandTotal(playerBJHand);
     }
-
     //dealers hand but second is hidden
     public void initializeDealerHand() {
         //i need 2 cards from gameDeck, so grab 2 cards
@@ -126,7 +119,6 @@ public class BlackJackEngine {
         dealerBJHand.add(initialTwoCardHand);
         System.out.println("\nDealer's hand is " + dealerBJHand.displayAllButFirst() + ", [???]");
     }
-
     public void displayHandTotal(Hand hand) {
         System.out.println("The total of your hand is " + getBlackJackHandTotal(hand));
     }
@@ -134,40 +126,30 @@ public class BlackJackEngine {
     public boolean validateTotal(Hand hand) {
         return  (getBlackJackHandTotal(hand) <= 21);
     }
-
     public boolean playerHitStandCycle(Hand hand) {
         String userDecision;
         boolean isValidHandTotal;
-
         do {
             userDecision = hitOrStand();
             isValidHandTotal = validateTotal(hand);
-
         } while (!userDecision.equals("STAND") && isValidHandTotal);
-
         if (!isValidHandTotal) {
             System.out.println("Oh no, you busted your hand! You lose.");
         }
 
         return isValidHandTotal;
     }
-
-    //method hit if no hit stand
     public String hitOrStand() {
         String userInput = console.getStringInput("Would you like to HIT or STAND?", "HIT", "STAND");
-        //they need to be able ot repeat it multiple times
         if (userInput.equals("HIT")) {
             hitAction(playerBJHand);
         } else if (userInput.equals("STAND")) {
             System.out.println("Player chose to stand.");
-            // handle stand
-            //move to the dealers turn
         } else {
             System.out.println("Invalid action, try again...");
         }
         return userInput;
     }
-
     public void hitAction(Hand hand) {
         System.out.println("Drawing a card... \n\n");
         Cards hitDraw = gameDeck.drawCard();
@@ -175,53 +157,39 @@ public class BlackJackEngine {
         hand.add(hitDraw);
         displayHandTotal(hand);
     }
-
     public void dealerHitOrStandCycle() {
         boolean action = false;
         Integer handTotal = getBlackJackHandTotal(dealerBJHand);
-
         do {
             if (handTotal <= 16) {
                 // hit card
                 dealerBJHand.add(gameDeck.drawCard());
-                // check total
                 handTotal = getBlackJackHandTotal(dealerBJHand);
                 if (handTotal > 16 && handTotal <= 21) {
                     action = false;
-                    // dealer stands loop stops action is false
                 } else if (handTotal <= 16) {
                     action = true;
-                    // dealer hits again action is true
                 } else if (handTotal > 21) {
-                    // dealer busts action is false
                     System.out.println("Dealer busted!!!!");
                     action = false;
                 }
             }
         } while (action);
     }
-
-    private void dealersTurn() {
-        // check if dealer has black jack
+    public void dealersTurn() {
         isBlackJack(dealerBJHand);
         if (isBlackJack(dealerBJHand)) {
             System.out.println("Dealer got BlackJack!");
-            // determine winnings based on possible scenarios
         } else {
             dealerHitOrStandCycle();
-            // do hit or stand turns
         }
     }
-
-    public boolean isBlackJack(Hand hand){
+    public boolean isBlackJack(Hand hand) {
         return (hand.getSize() == 2) && (getBlackJackHandTotal(hand) == 21);
     }
-
-    //get winner take total of each hand and compare
-    private void determineWinner(boolean playerBust, int bet){
+    public void determineWinner(boolean playerBust, int bet){
         System.out.println("Turns have ended! Let's determine the winner...\n");
         System.out.printf("Player's hand: %s, Player's total: %d\n\n", playerBJHand.toString(), getBlackJackHandTotal(playerBJHand));
-
         if (playerBust) {
             System.out.println("You bust, therefore you lose your initial bet! \n");
         } else {
@@ -230,26 +198,21 @@ public class BlackJackEngine {
         }
     }
 
-    private void distributeWinnings(int bet) {
+    public void distributeWinnings(int bet) {
         Integer dealerTotal = getBlackJackHandTotal(dealerBJHand);
         Integer playerTotal = getBlackJackHandTotal(playerBJHand);
-
         if (dealerTotal.intValue() == playerTotal.intValue()) {
-            //considered a push, return bet amount to player
             System.out.printf("Outcome: Push! Initial Bet of $%d returned to Casino Balance. \n", bet);
             player.casinoAccount.addWinningsToBalance(bet);
         } else if (dealerTotal > playerTotal && dealerTotal <= 21) {
             System.out.printf("Outcome: You lost! Initial Bet of $%d removed from Casino Balance. \n", bet);
-            //dealer wins and player loses their bet, so subtract bet amount??? or did we do that initially
         } else if (dealerTotal < playerTotal) {
             System.out.printf("Outcome: You won! Initial Bet of %d is doubled! %d added to Casino Balance. \n", bet, (bet * 2));
-            //player wins and the winnings goes into their account balance
         } else if(dealerTotal > 21) {
             //this would be of the dealer busts then??
-            System.out.printf("Dealer busted, you win! Initial Bet of $%d is double! %d added to Casino Balance. \n", bet);
+            System.out.printf("Dealer busted, you win! Initial Bet of %d is double! %d added to Casino Balance. \n", bet, bet);
         }
     }
-
     //playing again?
     public boolean promptRestartGame(){
         String userInput = console.getStringInput("Do you want to play again? YES/NO", "YES", "NO");
@@ -262,11 +225,9 @@ public class BlackJackEngine {
             return false;
         }
     }
-
     public Integer getBlackJackHandTotal(Hand hand){
         Integer total = 0;
         int aceCount = 0;
-
         // check if hand has an ACE
         for (Cards card: hand.getCardDeck()) {
             if (card.getRank().equals(Rank.Ace)) {
@@ -275,7 +236,6 @@ public class BlackJackEngine {
                 total += card.getRank().getBlackJackValue();
             }
         }
-
         for (int i = 0; i < aceCount; i++) {
             if (total + 11 > 21) {
                 total += Rank.Ace.getPrimaryValue();
