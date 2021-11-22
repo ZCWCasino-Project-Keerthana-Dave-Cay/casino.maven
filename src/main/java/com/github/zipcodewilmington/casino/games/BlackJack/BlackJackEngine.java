@@ -46,7 +46,6 @@ public class BlackJackEngine {
     }
 
     public void startBJGame() {
-        //to start: players, deck,
         boolean restartGame = false;
         System.out.println("♥◆♧♠ Welcome to BlackJack! ♠♧◆♥");
         displayRules();
@@ -61,7 +60,6 @@ public class BlackJackEngine {
             }
             dealersTurn();
             determineWinner(didPlayerBust, bet);
-            // restart game? y/n
             restartGame = promptRestartGame();
         } while (restartGame);
     }
@@ -208,8 +206,10 @@ public class BlackJackEngine {
             System.out.printf("Outcome: You lost! Initial Bet of $%d removed from Casino Balance. \n", bet);
         } else if (dealerTotal < playerTotal) {
             System.out.printf("Outcome: You won! Initial Bet of %d is doubled! %d added to Casino Balance. \n", bet, (bet * 2));
+            player.casinoAccount.addWinningsToBalance(bet * 2);
         } else if(dealerTotal > 21) {
             System.out.printf("Dealer busted, you win! Initial Bet of %d is double! %d added to Casino Balance. \n", bet, bet);
+            player.casinoAccount.addWinningsToBalance(bet * 2);
         }
     }
     //playing again?
